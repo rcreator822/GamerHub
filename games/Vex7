@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <title>Vex 7</title>
+    <link rel="icon" href="images/Tab Icon.png">
       <style>
        body{
          margin: 0; /* Remove default margin */
