@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <title>Vex 7</title>
-    <link rel="icon" href="images/Tab Icon.png">
+    <link rel="icon" href="images/TabIcon.png">
       <style>
        body{
          margin: 0; /* Remove default margin */
@@ -20,9 +20,9 @@
 <body>
     <iframe src="https://definitelynotblocked.vercel.app/games/vex7/index.html"></iframe>
     <style>
-  body {
-    background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
-  }
-</style>
+      body {
+        background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
+      }
+    </style>
 </body>
 </html>
