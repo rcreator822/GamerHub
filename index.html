@@ -1,128 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gamer Hub</title>
     <link rel="icon" href="images/Tab Icon.png">
     <style>
-        /*Gets Courier Prime */
-        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+      /*Gets Courier Prime */
+      @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
-        /* Reset and basic styles */
-        body {
-            margin: 0;
-            font-family: Courier Prime;
-            background-color: black;
-        }
+      /* Reset and basic styles */
+      body {
+        margin: 0;
+        font-family: Courier Prime;
+        background-color: black;
+      }
 
-        header, footer {
-            text-align: center;
-            padding: 10px;
-            background-color: black;
-            color: aqua;
-        }
+      header, footer {
+        text-align: center;
+        padding: 10px;
+        background-color: black;
+        color: aqua;
+      }
 
-        header {
-            padding: 20px;
-            border-bottom: 5px lawngreen solid;
-        }
+      header {
+        padding: 20px;
+        border-bottom: 5px lawngreen solid;
+      }
 
-        footer {
-            box-shadow: 10px -5px 5px lawngreen;
-        }
+      footer {
+        box-shadow: 10px -5px 5px lawngreen;
+      }
 
-        #head:hover {
-            margin-left: calc(100%/2 - 100px);
-            transform: translateY(-3px);
-            font-size: 35px;
-            border: 1px gray solid;
-            border-radius: 5px;
-            box-shadow: 10px 10px 5px lawngreen;
-            width: 200px;
-            text-align: center;
-        }
+      #head:hover {
+        margin-left: calc(100%/2 - 100px);
+        transform: translateY(-3px);
+        font-size: 35px;
+        border: 1px gray solid;
+        border-radius: 5px;
+        box-shadow: 10px 10px 5px lawngreen;
+        width: 200px;
+        text-align: center;
+      }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 10px;
-        }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 10px;
+      }
+      
+      .full {
+        margin: 0px;
+      }
 
-        .full:hover {
-            background-color: black;
-            width: 100%;
-            color: lawngreen;
-        }
-        
-        /* Responsive grid */
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-        }
+      .full:hover {
+        box-sizing: border-box;
+        background-color: black;
+        width: 100%;
+        color: lawngreen;
+        font-size: 25px;
+        margin: 0px;
+        border-radius: 5px;
+        transform: 
+      }
 
-        .col {
-            flex: 1;
-            min-width: 300px; /* Minimum width for columns */
-            padding: 10px;
-            box-sizing: border-box;
-        }
+      /* Responsive grid */
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+      }
 
-        /* Example styling */
-        .col {
-            background-color: #eaeaea;
-            margin: 5px;
-            text-align: center;
-            border-radius: 5px;
-        }
+      .col {
+        flex: 1;
+        min-width: 300px; /* Minimum width for columns */
+        padding: 10px;
+        box-sizing: border-box;
+      }
 
-        /* Navigation styles */
+      /* Example styling */
+      .col {
+        background-color: #eaeaea;
+        margin: 5px;
+        text-align: center;
+        border-radius: 5px;
+      }
+
+      /* Navigation styles */
+      nav {
+        display: flex;
+        justify-content: space-around;
+        padding: 10px;
+        background-color: #333;
+      }
+
+      nav a {
+        color: lawngreen;
+        text-decoration: none;
+      }
+
+      /* Responsive navigation */
+      @media (max-width: 600px) {
         nav {
-            display: flex;
-            justify-content: space-around;
-            padding: 10px;
-            background-color: #333;
+          flex-direction: column;
+          text-align: center;
         }
-
-        nav a {
-            color: lawngreen;
-            text-decoration: none;
-        }
-
-        /* Responsive navigation */
-        @media (max-width: 600px) {
-            nav {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1 id="head">Gamer Hub</h1>
+      <h1 id="head">Gamer Hub</h1>
     </header>
     <nav>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
     </nav>
     <main class="container">
-        <div class="row">
-            <div class="col">
-                <h3 class="full">hi</h3>
-            </div>
-            <div class="col">
-                
-            </div>
-            <div class="col">
-                
-            </div>
+      <div class="row">
+        <div class="col">
+          <h3 class="full">Games</h3>
+          
         </div>
+        <div class="col">
+
+        </div>
+        <div class="col">
+
+        </div>
+      </div>
     </main>
     <footer>
-        <p id="time"></p>
-        <p>&copy; 2025 Gamer Hub</p>
+      <p id="time"></p>
+      <p>&copy; 2025 Gamer Hub</p>
     </footer>
-</body>
+  </body>
 </html>
