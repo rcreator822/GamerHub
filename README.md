@@ -15,4 +15,4 @@ If you fork this repository, please give it a star and ensure there is a page on
 
 ## Acknowledgements
 
-Thank you to my school and friends for trying to understand what I am saying. Special thanks to the creators of [BlackoutGames](https://github.com/DotLYHiyou/BlackoutGames) and of [T9os](https://github.com/T9lAT22/t9os).
+Thank you to my school and friends for trying to understand what I am saying.
