@@ -26,10 +26,15 @@
       header {
         padding: 20px;
         border-bottom: 5px lawngreen solid;
+        color: aqua;
       }
 
       footer {
         box-shadow: 10px -5px 5px lawngreen;
+      }
+
+      #head {
+        color: aqua;
       }
 
       #head:hover {
@@ -51,6 +56,7 @@
       
       .full {
         margin: 0px;
+        color: black;
       }
 
       .full:hover {
@@ -62,6 +68,10 @@
         margin: 0px;
         border-radius: 5px;
         transform: 
+      }
+
+      a {
+        text-decoration: none;
       }
 
       /* Responsive grid */
@@ -109,7 +119,7 @@
   </head>
   <body>
     <header>
-      <h1 id="head">Gamer Hub</h1>
+      <a href="index.html"><h1 id="head">Gamer Hub</h1><a>
     </header>
     <nav>
       <a href="#">Home</a>
@@ -119,7 +129,7 @@
     <main class="container">
       <div class="row">
         <div class="col">
-          <h3 class="full">Games</h3>
+          <a href="#"><h3 class="full">Games</h3></a>
           
         </div>
         <div class="col">
