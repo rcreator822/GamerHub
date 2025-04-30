@@ -1,4 +1,4 @@
-# rcreator822cool
+# GamerHub
 Welcome to my new website!
 
 ## Description
