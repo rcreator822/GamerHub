@@ -1,11 +1,11 @@
-﻿<?php
+﻿
+<?php
 // Database configuration
 $host    = 'localhost';
 $db      = 'messaging_db';      // Your database name
 $user    = 'your_username';     // Your MySQL username
 $pass    = 'your_password';     // Your MySQL password
 $charset = 'utf8mb4';
-
 
 // Set up the DSN and options for PDO
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
@@ -14,27 +14,25 @@ $options = [
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 ];
 
-
 try {
     // Create a PDO instance for database connection
     $pdo = new PDO($dsn, $user, $pass, $options);
-} catch(PDOException $e) {
-    exit('Database connection failed: ' . $e->getMessage());
+} catch (PDOException $e) {
+    exit('<p style="color: red;">Database connection failed. Please try again later.</p>');
 }
-
 
 // If the request is for loading messages (AJAX GET request)
 if (isset($_GET['action']) && $_GET['action'] === 'load') {
+    header('Content-Type: text/html; charset=UTF-8');
     $stmt = $pdo->query("SELECT username, content, timestamp FROM messages ORDER BY id ASC");
     $messages = $stmt->fetchAll();
     foreach ($messages as $msg) {
         echo "<p><strong>" . htmlspecialchars($msg['username'], ENT_QUOTES, 'UTF-8') .
-             "</strong> [" . $msg['timestamp'] . "]: " .
+             "</strong> [" . htmlspecialchars($msg['timestamp'], ENT_QUOTES, 'UTF-8') . "]: " .
              htmlspecialchars($msg['content'], ENT_QUOTES, 'UTF-8') . "</p>";
     }
     exit;
 }
-
 
 // If a new message is posted via a POST request
 if (isset($_POST['username']) && isset($_POST['message'])) {
@@ -49,9 +47,10 @@ if (isset($_POST['username']) && isset($_POST['message'])) {
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Multi-User Messaging App</title>
     <style>
         /* Basic styling */
@@ -91,12 +90,12 @@ if (isset($_POST['username']) && isset($_POST['message'])) {
     <!-- Chat window where messages will appear -->
     <div id="chat-window">
         <?php
-        // Optionally, load initial messages upon first page load
+        // Load initial messages upon first page load
         $stmt = $pdo->query("SELECT username, content, timestamp FROM messages ORDER BY id ASC");
         $messages = $stmt->fetchAll();
         foreach ($messages as $msg) {
             echo "<p><strong>" . htmlspecialchars($msg['username'], ENT_QUOTES, 'UTF-8') .
-                 "</strong> [" . $msg['timestamp'] . "]: " .
+                 "</strong> [" . htmlspecialchars($msg['timestamp'], ENT_QUOTES, 'UTF-8') . "]: " .
                  htmlspecialchars($msg['content'], ENT_QUOTES, 'UTF-8') . "</p>";
         }
         ?>
@@ -111,12 +110,17 @@ if (isset($_POST['username']) && isset($_POST['message'])) {
         // Function to asynchronously load messages from the server
         function loadMessages() {
             fetch('?action=load')
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load messages');
+                    }
+                    return response.text();
+                })
                 .then(data => {
                     document.getElementById('chat-window').innerHTML = data;
-                });
+                })
+                .catch(error => console.error('Error:', error));
         }
-
 
         // Listen for the form submission event to send a new message
         document.getElementById('message-form').addEventListener('submit', function(e) {
@@ -132,14 +136,18 @@ if (isset($_POST['username']) && isset($_POST['message'])) {
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     body: formData.toString()
-                }).then(() => {
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to send message');
+                    }
                     // Clear the message field and refresh the chat window after sending
                     document.getElementById('message-input').value = '';
                     loadMessages();
-                });
+                })
+                .catch(error => console.error('Error:', error));
             }
         });
-
 
         // Poll the server every 3 seconds to get the latest messages
         setInterval(loadMessages, 3000);
