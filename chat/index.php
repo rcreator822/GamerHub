@@ -87,7 +87,7 @@ if (isset($_POST['username']) && isset($_POST['message'])) {
     </style>
 </head>
 <body>
-    <h1>Multi-User Messaging App</h1>
+    <h1>Gamer Hub Chat</h1>
     <!-- Chat window where messages will appear -->
     <div id="chat-window">
         <?php
