@@ -1,1 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamer Hub</title>
+    <link rel="icon" href="images/Tab Icon.png">
+    <style>
+      /*Gets Courier Prime */
+      @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
+      /* Reset and basic styles */
+      body {
+        margin: 0;
+        font-family: Courier Prime;
+        background-color: black;
+      }
+
+      header, footer {
+        text-align: center;
+        padding: 10px;
+        background-color: black;
+        color: aqua;
+      }
+
+      header {
+        padding: 20px;
+        border-bottom: 5px lawngreen solid;
+        color: aqua;
+      }
+
+      footer {
+        box-shadow: 10px -5px 5px lawngreen;
+      }
+
+      #head {
+        color: aqua;
+      }
+
+      #head:hover {
+        margin-left: calc(100%/2 - 100px);
+        transform: translateY(-3px);
+        font-size: 35px;
+        border: 1px gray solid;
+        border-radius: 5px;
+        box-shadow: 10px 10px 5px lawngreen;
+        width: 200px;
+        text-align: center;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 10px;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .full {
+        margin: 0px;
+        color: black;
+      }
+
+      .full:hover {
+        box-sizing: border-box;
+        background-color: black;
+        width: 100%;
+        color: lawngreen;
+        font-size: 25px;
+        margin: 0px;
+        border-radius: 5px;
+        transform: 
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      /* Responsive grid */
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .col {
+        flex: 1;
+        min-width: 300px; /* Minimum width for columns */
+        padding: 10px;
+        box-sizing: border-box;
+      }
+
+      /* Example styling */
+      .col {
+        background-color: #eaeaea;
+        margin: 5px;
+        text-align: center;
+        border-radius: 5px;
+      }
+
+      h1 {
+        font-size: 100px;
+        color: white;
+      }
+
+      #content {
+        color:white;
+      }
+      
+      /* Navigation styles */
+      nav {
+        display: flex;
+        justify-content: space-around;
+        padding: 10px;
+        background-color: #333;
+      }
+
+      nav a {
+        color: lawngreen;
+        text-decoration: none;
+      }
+
+      /* Responsive navigation */
+      @media (max-width: 600px) {
+        nav {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+      
+    </style>
+
+    <script>
+      window.onload = function() {
+        startTime();
+      }
+
+      function startTime() {
+        const today = new Date();
+        let h = today.getHours();
+        let m = today.getMinutes();
+        let s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        // If an element with id "txt" exists, update it with the time
+        const txtElem = document.getElementById("time");
+        if (txtElem) {
+          txtElem.innerHTML = h + ":" + m + ":" + s;
+        }
+        setTimeout(startTime, 1000);
+      }
+      function checkTime(i) {
+        if (i < 10) {
+          i = "0" + i;
+        }
+        return i;
+      }
+      navigator.getBattery().then(function(battery) {
+        function updateBatteryStatus() {
+          document.getElementById("battery").textContent = `Battery Level: ${(battery.level * 100).toFixed(0)}%`;
+        }
+
+        updateBatteryStatus(); // Initial update
+        battery.addEventListener("levelchange", updateBatteryStatus); // Update on change
+      });
+    </script>
+  </head>
+  <body>
+    <main class="container">
+      <h1>404</h1>
+      <div id="content">
+        <h2>Got lost? Lets get you back on track! (This webpage might have been moved or deleted)</h2>
+        <h2><a href="index.html">Home</a> <a href="#">Games</a> <a href="Proxy.php">Proxy</a> <a href="chat/index.php">Chat</a></h2>
+
+        <h2>GitHub project by <a href="https://github.com/rcreator822">rcreator822</a></h2>
+      </div>
+    </main>
+    <footer>
+      <p id="time"></p> <p id="battery"></p>
+      <p>&copy; 2025 Gamer Hub</p>
+    </footer>
+  </body>
+</html>
