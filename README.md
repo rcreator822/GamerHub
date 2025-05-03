@@ -1,7 +1,7 @@
 # GamerHub
 Welcome to my new website, GamerHub!
 
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=rcreator822&repo=GamerHub)](https://github.com/rcreator822/GamerHub)
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=rcreator822&repo=GamerHub&theme=dark)](https://github.com/rcreator822/GamerHub)
 
 ## Description
 
