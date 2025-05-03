@@ -1,17 +1,18 @@
 # GamerHub
-Welcome to my new website!
+Welcome to my new website, GamerHub!
 
 ## Description
 
-Gamer Hub is a unblocked game and proxy site made by a noob. This was supposed to just be for fun, so don't take it seriosly.
+Gamer Hub is a unblocked game and proxy site made by a noob. This was supposed to just be for fun, so don't take it seriously.
 
-If you fork this repository, please give it a star and ensure there is a page on your website giving credit to the creator.
+If you fork this repository, please give it a star and ensure there is a page on your website giving credit/attribution to the creator.
 
 ## Topics
 
 - Games
 - Fun
 - Unblocked
+- Proxy
 
 ## Owners
 This project is owned by [rcreator822](https://github.com/rcreator822), inspired by [DotLYHiyou's](https://github.com/DotLYHiyou) project, [Blackout Games](https://github.com/DotLYHiyou/BlackoutGames). Co-owned by [samuelbianchi73](https://github.com/samuelbianchi73) and [D0tlyBiy0u](https://github.com/D0tlyBiy0u).
