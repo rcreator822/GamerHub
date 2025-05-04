@@ -1,0 +1,17 @@
+# Ignore sensitive configuration files
+config.php
+.env
+
+# Ignore database backups and logs
+*.sql
+*.log
+
+# Ignore compiled files and cache directories
+*.cache
+*.DS_Store # macOS system file
+thumbs.db  # Windows system file
+
+# Ignore IDE/editor settings
+.vscode/
+.idea/
+*.swp
