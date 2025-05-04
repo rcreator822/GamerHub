@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gamer Hub</title>
@@ -8,169 +8,169 @@
 
     <!-- Importing Google Font -->
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
 
-        /* Global styles */
-        body {
-            margin: 0;
-            font-family: 'Courier Prime', monospace;
-            background-color: black;
-            color: aqua;
-        }
+      /* Global styles */
+      body {
+        margin: 0;
+        font-family: 'Courier Prime', monospace;
+        background-color: black;
+        color: aqua;
+      }
 
-        header, footer {
-            text-align: center;
-            padding: 10px;
-            background-color: black;
-        }
+      header, footer {
+        text-align: center;
+        padding: 10px;
+        background-color: black;
+      }
 
-        header {
-            padding: 20px;
-            border-bottom: 5px solid lawngreen;
-        }
+      header {
+        padding: 20px;
+        border-bottom: 5px solid lawngreen;
+      }
 
-        footer {
-            box-shadow: 10px -5px 5px lawngreen;
-        }
+      footer {
+        box-shadow: 10px -5px 5px lawngreen;
+      }
 
-        #head {
-            color: aqua;
-            transition: all 0.3s ease-in-out;
-        }
+      #head {
+        text-align: center;
+        color: aqua;
+      }
 
-        #head:hover {
-            font-size: 35px;
-            border: 1px solid gray;
-            border-radius: 5px;
-            box-shadow: 10px 10px 5px lawngreen;
-            width: 200px;
-            text-align: center;
-            transform: translateY(-3px);
-        }
+      #head:hover {
+        margin-left: calc(50% - 100px);
+        font-size: 35px;
+        border: 1px gray solid;
+        border-radius: 5px;
+        box-shadow: 10px 10px 5px lawngreen;
+        width: 200px;
+        text-align: center;
+      }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 10px;
-        }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 10px;
+      }
 
-        .full {
-            color: black;
-            transition: all 0.3s ease-in-out;
-        }
+      .full {
+        color: black;
+        transition: all 0.3s ease-in-out;
+      }
 
-        .full:hover {
-            background-color: black;
-            color: lawngreen;
-            font-size: 25px;
-            border-radius: 5px;
-        }
+      .full:hover {
+        background-color: black;
+        color: lawngreen;
+        font-size: 25px;
+        border-radius: 5px;
+      }
 
-        a {
-            text-decoration: none;
-        }
+      a {
+        text-decoration: none;
+      }
 
-        /* Grid system */
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-        }
+      /* Grid system */
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+      }
 
-        .col {
-            flex: 1;
-            min-width: 300px;
-            padding: 10px;
-            margin: 5px;
-            text-align: center;
-            border-radius: 5px;
-            background-color: #eaeaea;
-        }
+      .col {
+        flex: 1;
+        min-width: 300px;
+        padding: 10px;
+        margin: 5px;
+        text-align: center;
+        border-radius: 5px;
+        background-color: #2f2f2f;
+      }
 
-        /* Navigation */
+      /* Navigation */
+      nav {
+        display: flex;
+        justify-content: space-around;
+        padding: 10px;
+        background-color: #333;
+      }
+
+      nav a {
+        color: lawngreen;
+      }
+
+      @media (max-width: 600px) {
         nav {
-            display: flex;
-            justify-content: space-around;
-            padding: 10px;
-            background-color: #333;
+          flex-direction: column;
+          text-align: center;
         }
-
-        nav a {
-            color: lawngreen;
-        }
-
-        @media (max-width: 600px) {
-            nav {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
+      }
     </style>
 
     <script>
-        function startTime() {
-            const today = new Date();
-            let h = today.getHours();
-            let m = today.getMinutes();
-            let s = today.getSeconds();
-            m = checkTime(m);
-            s = checkTime(s);
-            document.getElementById("time").innerHTML = h + ":" + m + ":" + s;
-            setTimeout(startTime, 1000);
+      function startTime() {
+        const today = new Date();
+        let h = today.getHours();
+        let m = today.getMinutes();
+        let s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById("time").innerHTML = h + ":" + m + ":" + s;
+        setTimeout(startTime, 1000);
+      }
+
+      function checkTime(i) {
+        return i < 10 ? "0" + i : i;
+      }
+
+      window.onload = startTime;
+
+      navigator.getBattery().then(battery => {
+        function updateBatteryStatus() {
+          document.getElementById("battery").textContent = `Battery Level: ${(battery.level * 100).toFixed(0)}%`;
         }
-
-        function checkTime(i) {
-            return i < 10 ? "0" + i : i;
-        }
-
-        window.onload = startTime;
-
-        navigator.getBattery().then(battery => {
-            function updateBatteryStatus() {
-                document.getElementById("battery").textContent = `Battery Level: ${(battery.level * 100).toFixed(0)}%`;
-            }
-            updateBatteryStatus();
-            battery.addEventListener("levelchange", updateBatteryStatus);
-        });
+        updateBatteryStatus();
+        battery.addEventListener("levelchange", updateBatteryStatus);
+      });
     </script>
-</head>
+  </head>
 
-<body>
+  <body>
     <header>
-        <a href="index.html"><h1 id="head">Gamer Hub</h1></a>
+      <a href="index.html"><h1 id="head">Gamer Hub</h1></a>
     </header>
 
     <nav>
-        <a href="index.html">Home</a>
-        <a href="proxy.php">Proxy</a>
-        <a href="games.html">Games</a>
-        <a href="chat/index.php">Chat</a>
+      <a href="index.html">Home</a>
+      <a href="proxy.php">Proxy</a>
+      <a href="games.html">Games</a>
+      <a href="chat/index.php">Chat</a>
     </nav>
 
     <main class="container">
-        <div class="row">
-            <div class="col">
-                <a href="games.html"><h3 class="full">Games</h3></a>
-                <p>Choose from our collection of games!</p>
-            </div>
-            <div class="col">
-                <a href="proxy.html"><h3 class="full">Proxy</h3></a>
-                <p>Test our new proxy, currently in beta.</p>
-            </div>
-            <div class="col">
-                <a href="chat/index.php"><h3 class="full">Chat</h3></a>
-                <p>Chat with other users and share your knowledge.</p>
-            </div>
-            <div class="col">
-                <a href="https://github.com/rcreator822/GamerHub"><h3 class="full">GitHub</h3></a>
-                <p>See our GitHub page and give us a star!</p>
-            </div>
+      <div class="row">
+        <div class="col">
+          <a href="games.html"><h3 class="full">Games</h3></a>
+          <p>Choose from our collection of games!</p>
         </div>
+        <div class="col">
+          <a href="proxy.html"><h3 class="full">Proxy</h3></a>
+          <p>Test our new proxy, currently in beta.</p>
+        </div>
+        <div class="col">
+          <a href="chat/index.php"><h3 class="full">Chat</h3></a>
+          <p>Chat with other users and share your knowledge.</p>
+        </div>
+        <div class="col">
+          <a href="https://github.com/rcreator822/GamerHub"><h3 class="full">GitHub</h3></a>
+          <p>See our GitHub page and give us a star!</p>
+        </div>
+      </div>
     </main>
 
     <footer>
-        <p id="time"></p>
-        <p id="battery"></p>
-        <p>&copy; 2025 Gamer Hub</p>
+      <p id="time"></p>
+      <p id="battery"></p>
+      <p>&copy; 2025 Gamer Hub</p>
     </footer>
-</body>
+  </body>
 </html>
