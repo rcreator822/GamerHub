@@ -42,7 +42,7 @@ if (isset($_POST['username']) && isset($_POST['message'])) {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Multi-User Messaging App</title>
+    <title>Gamer Hub Chat</title>
     <style>
         /* Basic styling */
         body {
