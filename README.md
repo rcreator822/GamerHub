@@ -20,6 +20,9 @@ If you fork this repository, please give it a star and ensure there is a page on
 ## Owners
 This project is owned by [rcreator822](https://github.com/rcreator822), inspired by [DotLYHiyou's](https://github.com/DotLYHiyou) project, [Blackout Games](https://github.com/DotLYHiyou/BlackoutGames). Co-owned by [samuelbianchi73](https://github.com/samuelbianchi73) and [D0tlyBiy0u](https://github.com/D0tlyBiy0u).
 
+## Licensing
+Distributed under the CC0-1.0 license. See LICENSE for more information.
+
 ## Acknowledgements
 
 Thank you to my school and friends for trying to understand what I am saying.
