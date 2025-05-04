@@ -26,3 +26,5 @@ Distributed under the CC0-1.0 license. See LICENSE for more information.
 ## Acknowledgements
 
 Thank you to my school and friends for trying to understand what I am saying.
+
+Major thanks to [DotLYHiyou](https://github.com/DotLYHiyou) for games and other support.
