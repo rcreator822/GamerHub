@@ -1,14 +1,55 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<?php
+// Include database configuration
+require 'config.php';
+
+// Set up the DSN and options for PDO
+$dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+];
+
+try {
+    $pdo = new PDO($dsn, $user, $pass, $options);
+} catch(PDOException $e) {
+    exit('Database connection failed: ' . $e->getMessage());
+}
+
+// If the request is for loading messages (AJAX GET request)
+if (isset($_GET['action']) && $_GET['action'] === 'load') {
+    $stmt = $pdo->query("SELECT username, content, timestamp FROM messages ORDER BY id ASC");
+    $messages = $stmt->fetchAll();
+    foreach ($messages as $msg) {
+        echo "<p><strong>" . htmlspecialchars($msg['username'], ENT_QUOTES, 'UTF-8') .
+             "</strong> [" . $msg['timestamp'] . "]: " .
+             htmlspecialchars($msg['content'], ENT_QUOTES, 'UTF-8') . "</p>";
+    }
+    exit;
+}
+
+// If a new message is posted via a POST request
+if (isset($_POST['username']) && isset($_POST['message'])) {
+    $username = trim($_POST['username']);
+    $message  = trim($_POST['message']);
+    if (!empty($username) && !empty($message)) {
+        $stmt = $pdo->prepare("INSERT INTO messages (username, content) VALUES (:username, :content)");
+        $stmt->execute(['username' => $username, 'content' => $message]);
+    }
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Multi-User Messaging App</title>
     <style>
         /* Basic styling */
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: black;
+            color: lawngreen;
         }
         #chat-window {
             width: 100%;
@@ -38,67 +79,9 @@
     </style>
 </head>
 <body>
-    <h1>Gamer Hub Chat</h1>
-    <?php
-// Database configuration
-$host    = 'localhost';
-$db      = 'messaging_db';      // Your database name
-$user    = 'your_username';     // Your MySQL username
-$pass    = 'your_password';     // Your MySQL password, put these three in a .env
-$charset = 'utf8mb4';
-
-// Set up the DSN and options for PDO
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-];
-
-try {
-    // Create a PDO instance for database connection
-    $pdo = new PDO($dsn, $user, $pass, $options);
-} catch (PDOException $e) {
-    exit('<p style="color: red;">Database connection failed. Please try again later.</p>');
-}
-
-// If the request is for loading messages (AJAX GET request)
-if (isset($_GET['action']) && $_GET['action'] === 'load') {
-    header('Content-Type: text/html; charset=UTF-8');
-    $stmt = $pdo->query("SELECT username, content, timestamp FROM messages ORDER BY id ASC");
-    $messages = $stmt->fetchAll();
-    foreach ($messages as $msg) {
-        echo "<p><strong>" . htmlspecialchars($msg['username'], ENT_QUOTES, 'UTF-8') .
-             "</strong> [" . htmlspecialchars($msg['timestamp'], ENT_QUOTES, 'UTF-8') . "]: " .
-             htmlspecialchars($msg['content'], ENT_QUOTES, 'UTF-8') . "</p>";
-    }
-    exit;
-}
-
-// If a new message is posted via a POST request
-if (isset($_POST['username']) && isset($_POST['message'])) {
-    $username = trim($_POST['username']);
-    $message  = trim($_POST['message']);
-    if (!empty($username) && !empty($message)) {
-        // Use a prepared statement to insert the message securely into the table
-        $stmt = $pdo->prepare("INSERT INTO messages (username, content) VALUES (:username, :content)");
-        $stmt->execute(['username' => $username, 'content' => $message]);
-    }
-    exit;
-}
-?>
+    <h1>Multi-User Messaging App</h1>
     <!-- Chat window where messages will appear -->
-    <div id="chat-window">
-        <?php
-        // Load initial messages upon first page load
-        $stmt = $pdo->query("SELECT username, content, timestamp FROM messages ORDER BY id ASC");
-        $messages = $stmt->fetchAll();
-        foreach ($messages as $msg) {
-            echo "<p><strong>" . htmlspecialchars($msg['username'], ENT_QUOTES, 'UTF-8') .
-                 "</strong> [" . htmlspecialchars($msg['timestamp'], ENT_QUOTES, 'UTF-8') . "]: " .
-                 htmlspecialchars($msg['content'], ENT_QUOTES, 'UTF-8') . "</p>";
-        }
-        ?>
-    </div>
+    <div id="chat-window"></div>
     <!-- Message form with separate inputs for username and message -->
     <form id="message-form">
         <input type="text" name="username" id="username-input" placeholder="Your Name" autocomplete="off" required />
@@ -109,16 +92,10 @@ if (isset($_POST['username']) && isset($_POST['message'])) {
         // Function to asynchronously load messages from the server
         function loadMessages() {
             fetch('?action=load')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to load messages');
-                    }
-                    return response.text();
-                })
+                .then(response => response.text())
                 .then(data => {
                     document.getElementById('chat-window').innerHTML = data;
-                })
-                .catch(error => console.error('Error:', error));
+                });
         }
 
         // Listen for the form submission event to send a new message
@@ -127,7 +104,6 @@ if (isset($_POST['username']) && isset($_POST['message'])) {
             const username = document.getElementById('username-input').value;
             const message  = document.getElementById('message-input').value;
             if (username.trim() !== "" && message.trim() !== "") {
-                // Build the form data and send a POST request to store the message
                 const formData = new URLSearchParams();
                 formData.append('username', username);
                 formData.append('message', message);
@@ -135,16 +111,10 @@ if (isset($_POST['username']) && isset($_POST['message'])) {
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     body: formData.toString()
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to send message');
-                    }
-                    // Clear the message field and refresh the chat window after sending
+                }).then(() => {
                     document.getElementById('message-input').value = '';
                     loadMessages();
-                })
-                .catch(error => console.error('Error:', error));
+                });
             }
         });
 
