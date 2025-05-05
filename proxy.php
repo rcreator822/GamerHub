@@ -52,6 +52,10 @@
             echo "Invalid URL.";
         }
     }
+    window.addEventListener('beforeunload', (event) => {
+        event.preventDefault();
+        event.returnValue = ''; // Required for most browsers to show a confirmation dialog
+    });
     ?>
 </body>
 </html>
