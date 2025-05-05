@@ -120,6 +120,11 @@ if (isset($_POST['username']) && isset($_POST['message'])) {
 
         // Poll the server every 3 seconds to get the latest messages
         setInterval(loadMessages, 3000);
+        
+        window.addEventListener('beforeunload', (event) => {
+            event.preventDefault();
+            event.returnValue = ''; // Required for most browsers to show a confirmation dialog
+        });
     </script>
 </body>
 </html>
