@@ -86,6 +86,18 @@
         background-color: #2f2f2f;
       }
 
+      #blank {
+        color: black;
+        transition: all 0.3s ease-in-out;
+      }
+
+      #blank:hover {
+        background-color: black;
+        color: lawngreen;
+        font-size: 25px;
+        border-radius: 5px;
+      }
+      
       /* Navigation */
       nav {
         display: flex;
@@ -200,7 +212,7 @@
           <p>Proxy and chat do not work on all versions of Gamer Hub because file type not supported.</p>
         </div>
         <div class="col">
-          <h3 class="full" id="blank">Open In Blank</h3>
+          <button id="blank"><h3>Open In Blank</h3></button>
           <p>Extra protection.</p>
         </div>
       </div>
