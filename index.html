@@ -136,6 +136,32 @@
         event.preventDefault();
         event.returnValue = ''; // Required for most browsers to show a confirmation dialog
       });
+      
+     function openBlankPage() {
+        let newWin = window.open('about:blank');
+        newWin.document.write(`
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>New Blank Page</title>
+            <style>
+              body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+              h1 { color: blue; }
+            </style>
+          </head>
+          <body>
+            <h1>Welcome to My Full Webpage!</h1>
+            <p>This is a dynamically created webpage inside about:blank.</p>
+          </body>
+          </html>
+    `);
+       newWin.document.close();
+    }
+      document.getElementById(blank).onclick = function() {
+        openBlankPage();
+      }
     </script>
   </head>
 
@@ -173,6 +199,7 @@
           <a href="https://github.com/rcreator822/GamerHub"><h3 class="full">NOTICE:</h3></a>
           <p>Proxy and chat do not work on all versions of Gamer Hub because file type not supported.</p>
         </div>
+        <h1 class="full" id="blank"></h1>
       </div>
     </main>
 
