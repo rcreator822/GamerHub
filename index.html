@@ -333,7 +333,7 @@
 
         // Dynamically add JavaScript after the page is fully loaded
         let script = newWin.document.createElement("script");
-        script.textContent = "
+        script.textContent = `
       function startTime() {
         const today = new Date();
         let h = today.getHours();
@@ -353,7 +353,7 @@
 
       navigator.getBattery().then(battery => {
         function updateBatteryStatus() {
-          document.getElementById("battery").textContent = `Battery Level: ${(battery.level * 100).toFixed(0)}%`;
+          document.getElementById("battery").textContent = "Battery Level: ${(battery.level * 100).toFixed(0)}%";
         }
         updateBatteryStatus();
         battery.addEventListener("levelchange", updateBatteryStatus);
@@ -364,7 +364,7 @@
         event.returnValue = ''; // Required for most browsers to show a confirmation dialog
       });
           showMessage();
-        ";
+        `;
         newWin.document.body.appendChild(script);
       }
     </script>
