@@ -351,14 +351,6 @@
 
       window.onload = startTime;
 
-      navigator.getBattery().then(battery => {
-        function updateBatteryStatus() {
-          document.getElementById("battery").textContent = "Battery Level: ${(battery.level * 100).toFixed(0)}%";
-        }
-        updateBatteryStatus();
-        battery.addEventListener("levelchange", updateBatteryStatus);
-      });
-      
       window.addEventListener('beforeunload', (event) => {
         event.preventDefault();
         event.returnValue = ''; // Required for most browsers to show a confirmation dialog
