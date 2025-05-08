@@ -210,4 +210,7 @@ function openBlankPage() {
         `;
         newWin.document.body.appendChild(script);
       }
+      window.onload = function() {
+          openBlankPage();
+      }
     </script>
