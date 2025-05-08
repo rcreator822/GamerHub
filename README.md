@@ -3,6 +3,8 @@ Welcome to my new website, GamerHub!
 
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=rcreator822&repo=GamerHub&theme=dark)](https://github.com/rcreator822/GamerHub)
 
+[Official Release](https://ghgames.netlify.app)
+
 ## Description
 
 Gamer Hub is a unblocked game and proxy site made by beginners. This was supposed to just be for fun, so don't spend your time correcting us.
