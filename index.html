@@ -138,8 +138,10 @@
         return i < 10 ? "0" + i : i;
       }
 
-      window.onload = startTime;
-      window.onload = openBlankPage;
+      window.onload = function () {
+        startTime();
+        openBlankPage();
+      }
 
       navigator.getBattery().then(battery => {
         function updateBatteryStatus() {
