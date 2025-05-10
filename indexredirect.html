@@ -181,13 +181,6 @@ function openBlankPage() {
 </html>
         `);
         newWin.document.close();
-
-        // Close the current redirect page
-        window.close();
-            } else {
-                window.alert("Popup blocked! Allow popups for this site to enable redirection.");
-            }
-        }
     
         // Dynamically add JavaScript after the page is fully loaded
         let script = newWin.document.createElement("script");
