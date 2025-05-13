@@ -7,7 +7,7 @@ Welcome to my new website, GamerHub!
 
 ## Description
 
-Gamer Hub is a unblocked game and proxy site made by beginners. This was supposed to just be for fun, so don't spend your time correcting us.
+Gamer Hub is a unblocked game and proxy site made by learning web coders. Contribute by raising a issue or creating a pull request. We're open to sugestions!
 
 If you fork this repository, please give it a star and ensure there is a page on your website giving credit/attribution to the creator.
 
