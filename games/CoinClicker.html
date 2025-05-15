@@ -127,18 +127,18 @@
       function updateMessage() {
         if (upgradeLevel === 0) {
           upgradeCost = 15;
-          upgradeButton.textContent = `Dolla Dolla (price: ${upgradeCost})`;
+          upgradeButton.textContent = `Dolla Dolla Tip (price: ${upgradeCost})`;
         } else if (upgradeLevel === 1) {
-          upgradeCost = 35;
-          upgradeButton.textContent = `Bank of Ohio (price: ${upgradeCost})`;
-        } else if (upgradeLevel === 2) {
           upgradeCost = 50;
-          upgradeButton.textContent = `TD Bank of Canadian Suff (price: ${upgradeCost})`;
-        } else if (upgradeLevel === 3) {
+          upgradeButton.textContent = `Chores (price: ${upgradeCost})`;
+        } else if (upgradeLevel === 2) {
           upgradeCost = 100;
-          upgradeButton.textContent = `DOGE Investments (price: ${upgradeCost})`;
+          upgradeButton.textContent = `Bank of OHIO (price: ${upgradeCost})`;
+        } else if (upgradeLevel === 3) {
+          upgradeCost = 500;
+          upgradeButton.textContent = `YouTube Investments (price: ${upgradeCost})`;
         } else {
-          upgradeCost = 200;
+          upgradeCost = 750;
           upgradeButton.textContent = `Bitcoin (price: ${upgradeCost})`;
         }
       }
