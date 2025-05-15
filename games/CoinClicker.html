@@ -87,7 +87,7 @@
       upgradeButton.addEventListener('click', () => {
         if (points >= upgradeCost) {
           points -= upgradeCost;
-          pointsPerClick += 2;
+          pointsPerClick += upgradeLevel;
           upgradeLevel += 1;
           updateMessage();
           updateDisplay();
@@ -137,9 +137,12 @@
         } else if (upgradeLevel === 3) {
           upgradeCost = 500;
           upgradeButton.textContent = `YouTube Investments (price: ${upgradeCost})`;
-        } else {
+        } else if (upgradeLevel === 4) {
           upgradeCost = 750;
           upgradeButton.textContent = `Bitcoin (price: ${upgradeCost})`;
+        } else {
+          upgradeCost = 1000;
+          upgradeButton.textContent = `Mr. Beast (price: ${upgradeCost})`;
         }
       }
     </script>
