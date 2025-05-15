@@ -87,8 +87,12 @@
       upgradeButton.addEventListener('click', () => {
         if (points >= upgradeCost) {
           points -= upgradeCost;
-          pointsPerClick += upgradeLevel;
           upgradeLevel += 1;
+          if (upgradeLevel === 0) {
+            pointsPerClick += 1;
+          } else {
+            pointsPerClick += upgradeLevel;
+          }
           updateMessage();
           updateDisplay();
         }
