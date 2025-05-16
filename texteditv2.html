@@ -1,0 +1,130 @@
+<html>
+        <head><title>Downloaded HTML</title></head>
+        <body>
+            <pre style="white-space: pre-wrap; word-wrap: break-word;"><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Document Text Editor</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        textarea { width: 90%; height: 300px; max-width: 600px; min-height: 250px; }
+        button, select, input { margin: 10px; padding: 5px 10px; }
+    </style>
+</head>
+<body>
+    <h2>Multi-Document Text Editor</h2>
+
+    <input type="text" id="docName" placeholder="Enter document name"><br>
+    <textarea id="editor"></textarea><br>
+
+    <select id="format">
+        <option value="txt">TXT</option>
+        <option value="html">HTML</option>
+        <option value="pdf">PDF</option>
+        <option value="docx">DOCX</option>
+    </select>
+    <button onclick="downloadFile()">Download</button>
+    <button onclick="saveDocument()">Save</button>
+
+    <select id="loadSelect"></select>
+    <button onclick="loadDocument()">Load</button>
+    <button onclick="deleteDocument()">Delete</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.1.2/docx.min.js"></script>
+
+    <script>
+        function saveDocument() {
+            let name = document.getElementById("docName").value.trim();
+            if (!name) {
+                alert("Please enter a document name.");
+                return;
+            }
+            let documents = JSON.parse(localStorage.getItem("documents") || "{}");
+            documents[name] = document.getElementById("editor").value;
+            localStorage.setItem("documents", JSON.stringify(documents));
+            updateLoadOptions();
+            alert("Document saved!");
+        }
+
+        function loadDocument() {
+            let name = document.getElementById("loadSelect").value;
+            let documents = JSON.parse(localStorage.getItem("documents") || "{}");
+            if (documents[name]) {
+                document.getElementById("editor").value = documents[name];
+                document.getElementById("docName").value = name;
+            }
+        }
+
+        function deleteDocument() {
+            let name = document.getElementById("loadSelect").value;
+            let documents = JSON.parse(localStorage.getItem("documents") || "{}");
+            if (documents[name]) {
+                delete documents[name];
+                localStorage.setItem("documents", JSON.stringify(documents));
+                updateLoadOptions();
+                alert("Document deleted!");
+            }
+        }
+
+        function updateLoadOptions() {
+            let loadSelect = document.getElementById("loadSelect");
+            loadSelect.innerHTML = "";
+            let documents = JSON.parse(localStorage.getItem("documents") || "{}");
+            Object.keys(documents).forEach(name => {
+                let option = document.createElement("option");
+                option.value = name;
+                option.textContent = name;
+                loadSelect.appendChild(option);
+            });
+        }
+
+        function downloadFile() {
+            let text = document.getElementById("editor").value;
+            let format = document.getElementById("format").value;
+            let filename = (document.getElementById("docName").value || "document") + "." + format;
+            let blob, link;
+
+            if (format === "txt") {
+                blob = new Blob([text], { type: "text/plain" });
+            } else if (format === "html") {
+                blob = new Blob([`<html><body>${text}</body></html>`], { type: "text/html" });
+            } else if (format === "pdf") {
+                let { jsPDF } = window.jspdf;
+                let pdf = new jsPDF();
+                pdf.setFont("helvetica");
+                pdf.setFontSize(12);
+                pdf.text(text, 10, 10, { maxWidth: 180 });
+                pdf.save(filename);
+                return;
+            } else if (format === "docx") {
+                let { Document, Packer, Paragraph } = window.docx;
+                let doc = new Document({
+                    sections: [{ children: [new Paragraph(text)] }]
+                });
+
+                Packer.toBlob(doc).then(blob => {
+                    link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = filename;
+                    link.click();
+                });
+                return;
+            }
+
+            link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+        }
+
+        updateLoadOptions();
+    </script>
+</body>
+</html>
+</pre>
+        </body>
+    </html>

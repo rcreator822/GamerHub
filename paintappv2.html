@@ -1,0 +1,157 @@
+<html>
+        <head><title>Downloaded HTML</title></head>
+        <body>
+            <pre style="white-space: pre-wrap; word-wrap: break-word;"><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Painting App</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+    <style>
+        canvas {
+            border: 1px solid black;
+            cursor: crosshair;
+            display: block;
+            margin: auto;
+            width: 90vw;
+            height: 80vh;
+        }
+        .controls {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Advanced Painting App</h1>
+    <div class="controls">
+        <label for="colorPicker">Color:</label>
+        <input type="color" id="colorPicker">
+        
+        <label for="brushSize">Brush Size:</label>
+        <input type="range" id="brushSize" min="1" max="20" value="5">
+        
+        <label for="brushShape">Brush Shape:</label>
+        <select id="brushShape">
+            <option value="round">Round</option>
+            <option value="square">Square</option>
+        </select>
+
+        <button id="toggleMode">Switch to Eraser</button>
+        <button id="savePdf">Save as PDF</button>
+
+        <label for="pdfUpload">Upload PDF Template:</label>
+        <input type="file" id="pdfUpload" accept="application/pdf">
+    </div>
+    <canvas id="paintCanvas"></canvas>
+    <script>
+        const { jsPDF } = window.jspdf;
+        const canvas = document.getElementById("paintCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Set canvas size dynamically
+        canvas.width = window.innerWidth * 0.9;
+        canvas.height = window.innerHeight * 0.8;
+
+        let painting = false;
+        let color = "#000000";
+        let brushSize = 5;
+        let brushShape = "round";
+        let erasing = false;
+
+        document.getElementById("colorPicker").addEventListener("input", (event) => {
+            color = event.target.value;
+            erasing = false;
+            document.getElementById("toggleMode").textContent = "Switch to Eraser";
+        });
+
+        document.getElementById("brushSize").addEventListener("input", (event) => {
+            brushSize = event.target.value;
+        });
+
+        document.getElementById("brushShape").addEventListener("change", (event) => {
+            brushShape = event.target.value;
+        });
+
+        document.getElementById("toggleMode").addEventListener("click", () => {
+            erasing = !erasing;
+            color = erasing ? "#FFFFFF" : document.getElementById("colorPicker").value;
+            document.getElementById("toggleMode").textContent = erasing ? "Switch to Brush" : "Switch to Eraser";
+        });
+
+        canvas.addEventListener("mousedown", () => { painting = true; });
+        canvas.addEventListener("mouseup", () => { painting = false; ctx.beginPath(); });
+        canvas.addEventListener("mouseleave", () => { painting = false; });
+        canvas.addEventListener("mousemove", draw);
+
+        function draw(event) {
+            if (!painting) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            ctx.lineWidth = brushSize;
+            ctx.lineCap = brushShape;
+            ctx.strokeStyle = color;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        document.getElementById("savePdf").addEventListener("click", () => {
+            const pdf = new jsPDF();
+            const imgData = canvas.toDataURL("image/png");
+            pdf.addImage(imgData, "PNG", 10, 10, 180, 120);
+            pdf.save("painting.pdf");
+        });
+
+        // Resize canvas on window resize
+        window.addEventListener("resize", () => {
+            canvas.width = window.innerWidth * 0.9;
+            canvas.height = window.innerHeight * 0.8;
+        });
+
+        // Load PDF as template
+        document.getElementById("pdfUpload").addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.readAsArrayBuffer(file);
+                reader.onload = function () {
+                    const loadingTask = pdfjsLib.getDocument(reader.result);
+                    loadingTask.promise.then((pdf) => {
+                        pdf.getPage(1).then((page) => {
+                            const scale = 1.5;
+                            const viewport = page.getViewport({ scale });
+                            const tempCanvas = document.createElement("canvas");
+                            tempCanvas.width = viewport.width;
+                            tempCanvas.height = viewport.height;
+                            const tempCtx = tempCanvas.getContext("2d");
+
+                            const renderContext = {
+                                canvasContext: tempCtx,
+                                viewport: viewport,
+                            };
+
+                            page.render(renderContext).promise.then(() => {
+                                const pdfImage = new Image();
+                                pdfImage.src = tempCanvas.toDataURL("image/png");
+                                pdfImage.onload = () => {
+                                    ctx.drawImage(pdfImage, 0, 0, canvas.width, canvas.height);
+                                };
+                            });
+                        });
+                    });
+                };
+            }
+        });
+    </script>
+</body>
+</html>
+</pre>
+        </body>
+    </html>
