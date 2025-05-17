@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click the Box Game</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        #gameBox {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Click the Box!</h1>
+    <p>Score: <span id="score">0</span></p>
+    <div id="gameBox"></div>
+
+    <script>
+        let score = 0;
+        const box = document.getElementById("gameBox");
+        const scoreDisplay = document.getElementById("score");
+
+        function moveBox() {
+            const x = Math.random() * (window.innerWidth - 50);
+            const y = Math.random() * (window.innerHeight - 50);
+            box.style.left = `${x}px`;
+            box.style.top = `${y}px`;
+        }
+
+        box.addEventListener("click", () => {
+            score++;
+            scoreDisplay.textContent = score;
+            moveBox();
+        });
+
+        moveBox(); // Start the game by moving the box
+    </script>
+</body>
+</html>
+
