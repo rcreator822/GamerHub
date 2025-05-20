@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.11.3/brython.min.js"></script>
+</head>
+<body onload="brython()">
+    <h1>Catch the Falling Apples</h1>
+    <canvas id="gameCanvas" width="800" height="600" style="border:1px solid black;"></canvas>
+    <p>Score: <span id="score">0</span></p>
+
+    <script type="text/python">
+        from browser import document, html, timer
+        import random
+
+        # Set up canvas
+        canvas = document["gameCanvas"]
+        ctx = canvas.getContext("2d")
+
+        # Game properties
+        WIDTH, HEIGHT = 800, 600
+        basket_width, basket_height = 100, 20
+        basket_x = WIDTH // 2 - basket_width // 2
+        basket_y = HEIGHT - 40
+        basket_speed = 10
+
+        apple_radius = 10
+        apple_x = random.randint(apple_radius, WIDTH - apple_radius)
+        apple_y = 0
+        apple_speed = 5
+
+        score = 0
+
+        # Handle key events
+        keys = {"left": False, "right": False}
+
+        def keydown(event):
+            if event.key == "ArrowLeft":
+                keys["left"] = True
+            elif event.key == "ArrowRight":
+                keys["right"] = True
+
+        def keyup(event):
+            if event.key == "ArrowLeft":
+                keys["left"] = False
+            elif event.key == "ArrowRight":
+                keys["right"] = False
+
+        document.bind("keydown", keydown)
+        document.bind("keyup", keyup)
+
+        # Game loop
+        def update():
+            global basket_x, apple_x, apple_y, score
+
+            # Move basket
+            if keys["left"] and basket_x > 0:
+                basket_x -= basket_speed
+            if keys["right"] and basket_x < WIDTH - basket_width:
+                basket_x += basket_speed
+
+            # Move apple
+            apple_y += apple_speed
+
+            # Check for collision
+            if apple_y + apple_radius >= basket_y and basket_x < apple_x < basket_x + basket_width:
+                score += 1
+                document["score"].text = str(score)
+                apple_x = random.randint(apple_radius, WIDTH - apple_radius)
+                apple_y = 0
+
+            # Reset apple if it falls off
+            if apple_y > HEIGHT:
+                apple_x = random.randint(apple_radius, WIDTH - apple_radius)
+                apple_y = 0
+
+        def draw():
+            ctx.clearRect(0, 0, WIDTH, HEIGHT)
+
+            # Draw basket
+            ctx.fillStyle = "brown"
+            ctx.fillRect(basket_x, basket_y, basket_width, basket_height)
+
+            # Draw apple
+            ctx.fillStyle = "red"
+            ctx.beginPath()
+            ctx.arc(apple_x, apple_y, apple_radius, 0, 3.1415 * 2)
+            ctx.fill()
+
+        # Main loop
+        def game_loop():
+            update()
+            draw()
+            timer.set_timeout(game_loop, 30)
+
+        game_loop()
+    </script>
+</body>
+</html>
