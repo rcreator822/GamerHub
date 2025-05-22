@@ -11,6 +11,8 @@ Gamer Hub is a unblocked game and proxy site made by learning web coders. Contri
 
 If you fork this repository, please give it a star and ensure there is a page on your website giving credit/attribution to the creator.
 
+Note: If your admin has the ability to disable your browsing, download Gamer Hub as an app and use it offline. Still being developed. Since you might have to click fast to download it won't work on some computers. If you can, press the download button on the URL bar in Chrome.
+
 ## Topics
 
 - Games
