@@ -1,7 +1,7 @@
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open("pwa-cache").then((cache) => {
-      return cache.addAll(["/", "/index.html", "/.gitignore", "/403.html", "/404.html", "/LICENSE", "/README.md", "/TabIcon.png", "/appsredirect.html", "/errors.htaccess", "/games.html", "/gamesredireect.html", "/helios.html", "/indexredirect.html", "/manifest.json", "/proxy.php"]);
+      return cache.addAll(["/", "/index.html", "/.gitignore", "/403.html", "/404.html", "/LICENSE", "/README.md", "/TabIcon.png", "/apps.html", "/appsredirect.html", "/errors.htaccess", "/games.html", "/gamesredireect.html", "/helios.html", "/indexredirect.html", "/manifest.json", "/proxy.php"]);
     })
   );
 });
