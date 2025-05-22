@@ -355,6 +355,13 @@
         `;
         newWin.document.body.appendChild(script);
       }
+
+      let deferredPrompt;
+      window.addEventListener("beforeinstallprompt", (event) => {
+        // Prevent the default prompt from showing
+        event.preventDefault();
+        deferredPrompt = event;
+      }
     </script>
   </head>
 
