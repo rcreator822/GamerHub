@@ -22,7 +22,7 @@ Note: If your admin has the ability to disable your browsing, download Gamer Hub
 - Website
 
 ## Owners
-This project is owned by [rcreator822](https://github.com/rcreator822), inspired by [DotLYHiyou's](https://github.com/DotLYHiyou) project, [Blackout Games](https://github.com/DotLYHiyou/BlackoutGames). Co-owned by [samuelbianchi73](https://github.com/samuelbianchi73) and [D0tlyBiy0u](https://github.com/D0tlyBiy0u).
+This project is owned by [rcreator822](https://github.com/rcreator822), inspired by [DotLYHiyou's](https://github.com/DotLYHiyou) project, [Blackout Games](https://github.com/DotLYHiyou/BlackoutGames). Co-owned by [samuelbianchi73](https://github.com/samuelbianchi73).
 
 ## Licensing
 Distributed under the CC0-1.0 license. See LICENSE for more information.
