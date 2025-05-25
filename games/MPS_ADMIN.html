@@ -1,0 +1,409 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boss Fight Game: Multi-phase Showdown</title>
+    <link rel="icon" href="images/TabIcon.png">
+  <style>
+    /* Basic styling */
+    body {
+      margin: 0;
+      padding: 0;
+      background: #222;
+      color: #fff;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      margin: 0 auto;
+      background: #333;
+      border: 2px solid #fff;
+    }
+    #game-ui {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+    #game-ui > div {
+      margin: 5px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Game canvas -->
+  <canvas id="gameCanvas" width="800" height="600"></canvas>
+  <!-- UI to display health, boss phase, and info -->
+  <div id="game-ui">
+    <div id="playerHealth">Player Health: 100</div>
+    <div id="bossHealth">Boss Health: 500</div>
+    <div id="phase">Boss Phase: 1</div>
+    <div id="info"></div>
+  </div>
+
+
+  <script>
+    // Get canvas and context
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+
+    // Key state tracking
+    const keys = {};
+    document.addEventListener("keydown", (e) => { keys[e.code] = true; });
+    document.addEventListener("keyup", (e) => { keys[e.code] = false; });
+
+
+    // Global game variables
+    const projectiles = [];
+    const particles = [];
+    let gameOver = false;
+    let gameWon = false;
+
+
+    // Utility: generate explosion/muzzle flash particles
+    function spawnParticles(x, y, color, count) {
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle(x, y, color));
+      }
+    }
+
+
+    // Particle class for explosion effects
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 4;
+        this.vy = (Math.random() - 0.5) * 4;
+        this.alpha = 1;
+        this.life = 30 + Math.random() * 20; // lifetime in frames
+        this.radius = 2 + Math.random() * 3;
+        this.color = color;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.life--;
+        this.alpha = this.life / 50;
+      }
+      draw(ctx) {
+        ctx.save();
+        ctx.globalAlpha = Math.max(this.alpha, 0);
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+
+    // Player class – controls movement and shooting
+    class Player {
+      constructor() {
+        this.width = 40;
+        this.height = 40;
+        this.x = canvas.width / 2 - this.width / 2;
+        this.y = canvas.height - this.height - 20;
+        this.speed = 10;
+        this.health = 100000000;
+        this.shootingCooldown = 0;
+      }
+      update() {
+        if (keys["ArrowLeft"] || keys["KeyA"] || keys["KeyJ"]) {
+          this.x -= this.speed;
+        }
+        if (keys["ArrowRight"] || keys["KeyD"] || keys["KeyL"]) {
+          this.x += this.speed;
+        }
+        if (keys["ArrowDown"] || keys["KeyS"] || keys["KeyK"]) {
+          this.y += this.speed;
+        }
+        if (keys["ArrowUp"] || keys["KeyW"] || keys["KeyI"]) {
+          this.y -= this.speed;
+        }
+        // Keep within canvas bounds
+        if (this.x < 0) this.x = 0;
+        if (this.x + this.width > canvas.width) this.x = canvas.width - this.width;
+
+
+        if (this.y < 0) this.y = 0;
+        if (this.y + this.width > canvas.height) this.y = canvas.height - this.width;
+
+
+        // Shoot using spacebar with cooldown
+        if (keys["Space"] && this.shootingCooldown <= 0) {
+          projectiles.push(new Projectile(this.x + this.width / 2, this.y, 0, -12, "player"));
+          spawnParticles(this.x + this.width / 2, this.y, "#00ff00", 5); // muzzle flash effect
+          this.shootingCooldown = 15;
+        }
+        if (this.shootingCooldown > 0) this.shootingCooldown--;
+      }
+      draw() {
+        ctx.fillStyle = "#00ff00";
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      }
+    }
+
+
+    // Boss class with multiple phases and animated effects
+    class Boss {
+      constructor() {
+        this.width = 80;
+        this.height = 80;
+        this.x = canvas.width / 2 - this.width / 2;
+        this.y = 50;
+        this.health = 500;
+        this.attackCooldown = 0;
+        this.phase = 1;
+        this.hitTimer = 0; // for hit flash effect
+      }
+      update() {
+        // Update boss phase based on current health
+        if (this.health > 350) {
+          this.phase = 1;
+        } else if (this.health > 150) {
+          this.phase = 2;
+        } else {
+          this.phase = 3;
+        }
+        if (this.hitTimer > 0) {
+          this.hitTimer--;
+        }
+        // Different movement patterns for each phase:
+        if (this.phase === 1) {
+          this.x += Math.sin(Date.now() / 1000) * 1.5;
+        } else if (this.phase === 2) {
+          this.x += Math.sin(Date.now() / 800) * 3;
+        } else {
+          this.x += Math.sin(Date.now() / 600) * 4;
+        }
+        // Keep boss inside canvas bounds
+        if (this.x < 0) this.x = 0;
+        if (this.x + this.width > canvas.width) this.x = canvas.width - this.width;
+
+
+        // Attack logic based on phase
+        if (this.attackCooldown <= 0) {
+          this.fireAttackPattern();
+          if (this.phase === 1) this.attackCooldown = 90;
+          else if (this.phase === 2) this.attackCooldown = 60;
+          else this.attackCooldown = 40;
+        } else {
+          this.attackCooldown--;
+        }
+      }
+      fireAttackPattern() {
+        const centerX = this.x + this.width / 2;
+        const centerY = this.y + this.height / 2;
+        if (this.phase === 1) {
+          // Phase 1: Radial spread & one targeted shot
+          const bulletCount = 12;
+          for (let i = 0; i < bulletCount; i++) {
+            const angle = (2 * Math.PI / bulletCount) * i;
+            const speed = 3;
+            const vx = Math.cos(angle) * speed;
+            const vy = Math.sin(angle) * speed;
+            projectiles.push(new Projectile(centerX, centerY, vx, vy, "boss"));
+          }
+          this.fireTargetedShot(0);
+        } else if (this.phase === 2) {
+          // Phase 2: More bullets and two targeted shots
+          const bulletCount = 16;
+          for (let i = 0; i < bulletCount; i++) {
+            const angle = (2 * Math.PI / bulletCount) * i;
+            const speed = 3.5;
+            const vx = Math.cos(angle) * speed;
+            const vy = Math.sin(angle) * speed;
+            projectiles.push(new Projectile(centerX, centerY, vx, vy, "boss"));
+          }
+          this.fireTargetedShot(0);
+          this.fireTargetedShot(0.1);
+        } else {
+          // Phase 3: Even more aggressive patterns
+          const bulletCount = 20;
+          for (let i = 0; i < bulletCount; i++) {
+            const angle = (2 * Math.PI / bulletCount) * i;
+            const speed = 4;
+            const vx = Math.cos(angle) * speed;
+            const vy = Math.sin(angle) * speed;
+            projectiles.push(new Projectile(centerX, centerY, vx, vy, "boss"));
+          }
+          this.fireTargetedShot(0);
+          this.fireTargetedShot(0.15);
+          this.fireTargetedShot(-0.15);
+        }
+      }
+      fireTargetedShot(offset) {
+        // Aim at the player with an optional angular offset
+        const centerX = this.x + this.width / 2;
+        const centerY = this.y + this.height / 2;
+        const targetX = player.x + player.width / 2;
+        const targetY = player.y + player.height / 2;
+        const dx = targetX - centerX;
+        const dy = targetY - centerY;
+        let angle = Math.atan2(dy, dx) + offset;
+        const speed = (this.phase === 1) ? 4 : (this.phase === 2 ? 4.5 : 5);
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed;
+        projectiles.push(new Projectile(centerX, centerY, vx, vy, "boss"));
+      }
+      draw() {
+        let bossColor;
+        // Flash white briefly when hit
+        if (this.hitTimer > 0) {
+          bossColor = "#ffffff";
+        } else {
+          if (this.phase === 1) bossColor = "#ff0000";
+          else if (this.phase === 2) bossColor = "#ff8800";
+          else bossColor = "#aa00ff";
+        }
+        ctx.fillStyle = bossColor;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      }
+    }
+
+
+    // Projectile class – represents bullets fired by both sides
+    class Projectile {
+      constructor(x, y, vx, vy, from) {
+        this.x = x;
+        this.y = y;
+        this.vx = vx;
+        this.vy = vy;
+        this.radius = 5;
+        this.from = from; // either "player" or "boss"
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.from === "player" ? "#00ff00" : "#ff3300";
+        ctx.fill();
+        ctx.closePath();
+      }
+    }
+
+
+    // Instantiate the player and the boss
+    const player = new Player();
+    const boss = new Boss();
+
+
+    // Main game loop
+    function updateGame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+
+      if (gameOver || gameWon) {
+        displayEndScreen();
+        return;
+      }
+
+
+      // Update and draw entities
+      player.update();
+      boss.update();
+      player.draw();
+      boss.draw();
+
+
+      // Update projectiles and test for collisions
+      for (let i = projectiles.length - 1; i >= 0; i--) {
+        const projectile = projectiles[i];
+        projectile.update();
+        projectile.draw();
+
+
+        // Remove projectiles that leave the screen
+        if (
+          projectile.x < 0 ||
+          projectile.x > canvas.width ||
+          projectile.y < 0 ||
+          projectile.y > canvas.height
+        ) {
+          projectiles.splice(i, 1);
+          continue;
+        }
+
+
+        // Player projectile hitting the boss
+        if (projectile.from === "player") {
+          if (
+            projectile.x > boss.x &&
+            projectile.x < boss.x + boss.width &&
+            projectile.y > boss.y &&
+            projectile.y < boss.y + boss.height
+          ) {
+            boss.health -= 10;
+            boss.hitTimer = 10; // trigger hit flash
+            spawnParticles(projectile.x, projectile.y, "#ffaaaa", 15);
+            projectiles.splice(i, 1);
+            if (boss.health <= 0) gameWon = true;
+            continue;
+          }
+        }
+        // Boss projectile hitting the player
+        else if (projectile.from === "boss") {
+          if (
+            projectile.x > player.x &&
+            projectile.x < player.x + player.width &&
+            projectile.y > player.y &&
+            projectile.y < player.y + player.height
+          ) {
+            player.health -= 10;
+            spawnParticles(projectile.x, projectile.y, "#ffaa00", 10);
+            projectiles.splice(i, 1);
+            if (player.health <= 0) gameOver = true;
+            continue;
+          }
+        }
+      }
+
+
+      // Update and draw explosion particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        particles[i].draw(ctx);
+        if (particles[i].life <= 0) particles.splice(i, 1);
+      }
+
+
+      // Update the on-screen UI
+      document.getElementById("playerHealth").innerText = "Player Health: " + player.health;
+      document.getElementById("bossHealth").innerText = "Boss Health: " + boss.health;
+      document.getElementById("phase").innerText = "Boss Phase: " + boss.phase;
+
+
+      requestAnimationFrame(updateGame);
+    }
+
+
+    // Display the end screen when the game concludes
+    function displayEndScreen() {
+      ctx.fillStyle = "#fff";
+      ctx.font = "48px sans-serif";
+      const text = gameWon ? "Well of course." : "HOW?";
+      const textWidth = ctx.measureText(text).width;
+      ctx.fillText(text, (canvas.width - textWidth) / 2, canvas.height / 2);
+    }
+
+
+    // Start the game loop
+    updateGame();
+  </script>
+</body>
+</html>
+
+
+
+
+

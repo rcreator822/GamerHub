@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coin Clicker</title>
+    <link rel="icon" href="images/TabIcon.png">
+    <link rel="icon" href="data:8J+Zgg==">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap');
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        background-image: linear-gradient(to bottom right, blue, green);
+        background-size: cover;
+        background-repeat: no-repeat;
+        font-family: Nunito;
+        text-align: center;
+      }
+      .button {
+        background-color: gray;
+        color: blue;
+        border: black 4px solid;
+        border-radius: 5px;
+        margin: 10px;
+        padding: 10px 20px;
+      }
+      .button:hover {
+        transform: translateY(-3px);
+      }
+      @keyframes button {
+        0% {font-size: 200px;}
+        50% {font-size: 230px}
+        100% {font-size: 200px;}
+      }
+      #clickme {
+        font-size: 200px;
+        text-align: center;
+        border: black 4px solid;
+        background-color: aqua;
+        animation-name: button;
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+      }
+      #response {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🪙 Coin Clicker</h1>
+    <p>Score: </p><p id="pointDisplay">0</p>
+    <button id="clickme">🪙</button>
+    <p id="response"></p>
+    <div id="upgrades">
+      <button class="button" id="upgrade">Dolla Dolla (price: 15)</button>
+      <button class="button" id="autoUpgradeButton">+1 Auto Click (price: 500)</button>
+    </div>
+    <script>
+      let points = 0;
+      let pointsPerClick = 1;
+      let upgradeCost = 15;
+      let autoPoints = 0;
+      let autoPointCost = 500;
+      let autoClickRate = 1; // Points per second from the autoclicker
+      let upgradeLevel = 0;
+
+
+      const pointsDisplay = document.getElementById("pointDisplay");
+      const upgradeButton = document.getElementById("upgrade");
+      const clickerButton = document.getElementById("clickme");
+      const errorMessage = document.getElementById("response");
+      const autoUpgradeButton = document.getElementById("autoUpgradeButton");
+
+
+      // Clicking the main button
+      clickerButton.addEventListener('click', () => {
+        points += pointsPerClick;
+        updateDisplay();
+        errorMessage.textContent = "";
+      });
+
+
+      // Upgrading the points per click
+      upgradeButton.addEventListener('click', () => {
+        if (points >= upgradeCost) {
+          points -= upgradeCost;
+          upgradeLevel += 1;
+          if (upgradeLevel === 0) {
+            pointsPerClick += 1;
+          } else {
+            pointsPerClick += upgradeLevel;
+          }
+          updateMessage();
+          updateDisplay();
+        }
+      });
+
+
+      // Buying the autoclicker
+      autoUpgradeButton.addEventListener('click', () => {
+        if (points >= autoPointCost) {
+          points -= autoPointCost;
+          autoPoints += autoClickRate;
+          autoPointCost += 50; // Increment cost for each purchase
+          autoUpgradeButton.textContent = `+${autoPoints} Auto Click (price: ${autoPointCost})`;
+          updateDisplay();
+        }
+      });
+
+
+      // Autoclick functionality
+      setInterval(() => {
+        points += autoPoints;
+        updateDisplay();
+      }, 1000); // Runs every second
+
+
+      function updateDisplay() {
+        pointsDisplay.textContent = points;
+      }
+
+
+      function updateError() {
+        errorMessage.textContent = "Don't spam!";
+      }
+
+
+      function updateMessage() {
+        if (upgradeLevel === 0) {
+          upgradeCost = 15;
+          upgradeButton.textContent = `Dolla Dolla Tip (price: ${upgradeCost})`;
+        } else if (upgradeLevel === 1) {
+          upgradeCost = 50;
+          upgradeButton.textContent = `Chores (price: ${upgradeCost})`;
+        } else if (upgradeLevel === 2) {
+          upgradeCost = 100;
+          upgradeButton.textContent = `Bank of OHIO (price: ${upgradeCost})`;
+        } else if (upgradeLevel === 3) {
+          upgradeCost = 500;
+          upgradeButton.textContent = `YouTube Investments (price: ${upgradeCost})`;
+        } else if (upgradeLevel === 4) {
+          upgradeCost = 750;
+          upgradeButton.textContent = `Bitcoin (price: ${upgradeCost})`;
+        } else {
+          upgradeCost = 1000;
+          upgradeButton.textContent = `Mr. Beast (price: ${upgradeCost})`;
+        }
+      }
+    </script>
+  </body>
+</html>
+<script>
+  document.addEventListener('keydown', (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevents the Enter key from acting like a click
+      updateError();
+    }
+  });
+</script>
