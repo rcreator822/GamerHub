@@ -29,6 +29,6 @@ Distributed under the CC0-1.0 license. See LICENSE for more information.
 
 ## Acknowledgements
 
-Thank you to my school and friends for trying to understand what I am saying.
+Thank you to my school and friends for testing, other unblocked game website creators, and all other contributers.
 
 Major thanks to [DotLYHiyou](https://github.com/DotLYHiyou) for games and other support.
