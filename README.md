@@ -13,6 +13,10 @@ If you fork this repository, please give it a star and ensure there is a page on
 
 Note: If your admin has the ability to disable your browsing, download Gamer Hub as an app so you can use it offline. Still being developed. Since you might have to click fast to download it won't work on some computers. If you can, press the download button on the URL bar in Chrome.
 
+## Feedback/Suggestions
+
+Got any feedback, suggestions, or notes for GamerHub? Feel free to submit them in this quick, 30 second form! [Form](https://docs.google.com/forms/d/16aXkM7Ko8rbhD4o6ASa3A1y4y3Rq_C-eibCAkHl7wTE/edit?pli=1)
+
 ## Topics
 
 - Games
