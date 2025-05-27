@@ -1,0 +1,49 @@
+/* Basic styling */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header styles */
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 20px;
+    font-size: 24px;
+}
+
+/* Main game section */
+main {
+    padding: 20px;
+}
+
+/* Player info section */
+#player-info {
+    background-color: white;
+    padding: 15px;
+    margin: 20px auto;
+    max-width: 300px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Game action buttons */
+#game-actions button {
+    display: block;
+    width: 200px;
+    margin: 10px auto;
+    padding: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #28a745;
+    color: white;
+}
+
+#game-actions button:hover {
+    background-color: #218838;
+}
