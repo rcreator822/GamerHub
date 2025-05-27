@@ -7,11 +7,11 @@ Welcome to my new website, GamerHub!
 
 ## Description
 
-Gamer Hub is a unblocked game and proxy site made by learning web coders. Contribute by raising a issue or creating a pull request. We're open to sugestions!
+Gamer Hub is a unblocked game and proxy site made by learning web coders. Contribute by raising a issue or creating a pull request. We're open to suggestions!
 
 If you fork this repository, please give it a star and ensure there is a page on your website giving credit/attribution to the creator.
 
-Note: If your admin has the ability to disable your browsing, download Gamer Hub as an app and use it offline. Still being developed. Since you might have to click fast to download it won't work on some computers. If you can, press the download button on the URL bar in Chrome.
+Note: If your admin has the ability to disable your browsing, download Gamer Hub as an app so you can use it offline. Still being developed. Since you might have to click fast to download it won't work on some computers. If you can, press the download button on the URL bar in Chrome.
 
 ## Topics
 
@@ -22,13 +22,13 @@ Note: If your admin has the ability to disable your browsing, download Gamer Hub
 - Website
 
 ## Owners
-This project is owned by [rcreator822](https://github.com/rcreator822), inspired by [DotLYHiyou's](https://github.com/DotLYHiyou) project, [Blackout Games](https://github.com/DotLYHiyou/BlackoutGames). Co-owned by [samuelbianchi73](https://github.com/samuelbianchi73).
+This project is owned by [rcreator822](https://github.com/rcreator822), co-owned by [samuelbianchi73](https://github.com/samuelbianchi73) and [phantomtax-ai](https:github.com/phantomtax-ai), andinspired by [DotLYHiyou's](https://github.com/DotLYHiyou) project, [Blackout Games](https://github.com/DotLYHiyou/BlackoutGames).
 
 ## Licensing
 Distributed under the CC0-1.0 license. See LICENSE for more information.
 
 ## Acknowledgements
 
-Thank you to my school and friends for testing, other unblocked game website creators, and all other contributers.
+Thank you to my school and friends for testing, other unblocked game website creators, and all other contributors.
 
 Major thanks to [DotLYHiyou](https://github.com/DotLYHiyou) for games and other support.
