@@ -15,8 +15,7 @@ Note: If your admin has the ability to disable your browsing, download Gamer Hub
 
 ## Feedback/Suggestions
 
-Got any feedback, suggestions, or notes for GamerHub? Feel free to submit them in this quick, 30 second form! [Form]([https://docs.google.com/forms/d/16aXkM7Ko8rbhD4o6ASa3A1y4y3Rq_C-eibCAkHl7wTE/edit?pli=1](https://docs.google.com/forms/d/e/1FAIpQLSfo5pN6hPgBc-o3lxlapUYTzVXj7zmcpOiQ6bsS_az2SVkcBg/viewform?usp=dialog))
-
+Got any feedback, suggestions, or notes for GamerHub? Feel free to submit them in this quick, 30 second form! [Form](https://docs.google.com/forms/d/e/1FAIpQLSfo5pN6hPgBc-o3lxlapUYTzVXj7zmcpOiQ6bsS_az2SVkcBg/viewform?usp=dialog)
 ## Topics
 
 - Games
