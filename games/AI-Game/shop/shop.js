@@ -1,4 +1,4 @@
-import { getPlayerData, updateCoins } from "../firebase.js";
+import { getPlayerData, updateCoins } from "games/AI-Game/firebase.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const playerId = "player1"; // Replace with dynamic player ID
@@ -34,5 +34,5 @@ async function buyItem(itemName, price) {
 }
 
 function goBack() {
-    window.location.href = "../index.html";
+    window.location.href = "games/AI-Game/index.html";
 }
