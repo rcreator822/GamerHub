@@ -33,7 +33,7 @@
     <br>
     <button onclick="runCode()">Run</button>
     <button onclick="downloadCode()">Download</button>
-    <button onclick=”openFullscreen()”>View Full Preview</button>
+    <button onclick=”openBlankPage()”>View Full Preview</button>
     <br>
     <iframe id="preview"></iframe>
 
@@ -57,13 +57,17 @@
             a.click();
             document.body.removeChild(a);
         }
-      function openFullscreen() {
-          const code = document.getElementById('code').value;
-          const newWindow = window.open();
-          newWindow.document.write(code);
-          newWindow.document.close();
-      }
 
+        function openBlankPage() {
+    let newWin = window.open('about:blank');
+    newWin.document.write(code);
+        newWin.document.close();
+
+        // Dynamically add JavaScript after the page is fully loaded
+        let script = newWin.document.createElement("script");
+        script.textContent = ``;
+        newWin.document.body.appendChild(script);
+      }
 
     </script>
 </body>
