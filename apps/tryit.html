@@ -59,15 +59,16 @@
         }
 
         function openBlankPage() {
-    let newWin = window.open('about:blank');
-    newWin.document.write(code);
-        newWin.document.close();
+            const code = document.getElementById('code').value;
+            let newWin = window.open('about:blank');
+            newWin.document.write(code);
+            newWin.document.close();
 
-        // Dynamically add JavaScript after the page is fully loaded
-        let script = newWin.document.createElement("script");
-        script.textContent = ``;
-        newWin.document.body.appendChild(script);
-      }
+            // Dynamically add JavaScript after the page is fully loaded
+            let script = newWin.document.createElement("script");
+            script.textContent = ``;
+            newWin.document.body.appendChild(script);
+        }
 
     </script>
 </body>
