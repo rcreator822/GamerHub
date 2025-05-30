@@ -1,5 +1,5 @@
 # GamerHub
-Welcome to my new website, GamerHub!
+Welcome to GamerHub!
 
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=rcreator822&repo=GamerHub&theme=dark)](https://github.com/rcreator822/GamerHub)
 
@@ -7,7 +7,7 @@ Website will be hosted soon!
 
 ## Description
 
-Gamer Hub is a unblocked game and proxy site made by learning web coders. Contribute by raising a issue or creating a pull request. We're open to suggestions!
+Gamer Hub is a unblocked game site made by learning web coders. Contribute by raising a issue or creating a pull request. We're open to suggestions!
 
 If you fork this repository, please give it a star and ensure there is a page on your website giving credit/attribution to the creator.
 
@@ -16,6 +16,7 @@ Note: If your admin has the ability to disable your browsing, download Gamer Hub
 ## Feedback/Suggestions
 
 Got any feedback, suggestions, or notes for GamerHub? Feel free to submit them in this quick, 30 second form! [Form](https://docs.google.com/forms/d/e/1FAIpQLSfo5pN6hPgBc-o3lxlapUYTzVXj7zmcpOiQ6bsS_az2SVkcBg/viewform?usp=dialog)
+
 ## Topics
 
 - Games
