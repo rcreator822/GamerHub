@@ -5,6 +5,8 @@ Welcome to GamerHub!
 
 [Official Release](https://ghgames.netlify.app)
 
+Currently: [![Netlify Status](https://api.netlify.com/api/v1/badges/e185b786-9878-4207-81a6-11086ba79f8c/deploy-status)](https://app.netlify.com/projects/ghgames/deploys)
+
 ## Description
 
 Gamer Hub is a unblocked game site made by learning web coders. Contribute by raising a issue or creating a pull request. We're open to suggestions!
