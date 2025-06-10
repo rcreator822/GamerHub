@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<head>
+    <title>Gamer Hub</title>
+    <link rel="icon" src="TabIcon.png">
+</head>
+<body>
+    <h3>Redirecting...</h3>
+</body>
+<script>
+function openBlankPage() {
+    let newWin = window.open('about:blank');
+    newWin.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Gamer Hub</title>
+          <link rel="icon" href="TabIcon.png">
+        </head>
+        <body>
+          <iframe src="ghgames.netlify.app/index.html" style="display: block; width: %100; height: %100;"></iframe>
+        </body>
+      </html>
+    `);
+    newWin.document.close();
+
+    // Dynamically add JavaScript after the page is fully loaded
+    let script = newWin.document.createElement("script");
+    script.textContent = `
+    function startTime() {
+      const today = new Date();
+      let h = today.getHours();
+      let m = today.getMinutes();
+      let s = today.getSeconds();
+      m = checkTime(m);
+      s = checkTime(s);
+      document.getElementById("time").innerHTML = h + ":" + m + ":" + s;
+      setTimeout(startTime, 1000);
+    }
+
+      function checkTime(i) {
+        return i < 10 ? "0" + i : i;
+      }
+
+      window.onload = startTime;
+
+          showMessage();
+        `;
+        newWin.document.body.appendChild(script);
+      }
+      window.onload = function() {
+          openBlankPage();
+      }
+    </script>
