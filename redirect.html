@@ -23,31 +23,7 @@ function openBlankPage() {
     `);
     newWin.document.close();
 
-    // Dynamically add JavaScript after the page is fully loaded
-    let script = newWin.document.createElement("script");
-    script.textContent = `
-    function startTime() {
-      const today = new Date();
-      let h = today.getHours();
-      let m = today.getMinutes();
-      let s = today.getSeconds();
-      m = checkTime(m);
-      s = checkTime(s);
-      document.getElementById("time").innerHTML = h + ":" + m + ":" + s;
-      setTimeout(startTime, 1000);
+    window.onload = function() {
+      openBlankPage();
     }
-
-      function checkTime(i) {
-        return i < 10 ? "0" + i : i;
-      }
-
-      window.onload = startTime;
-
-          showMessage();
-        `;
-        newWin.document.body.appendChild(script);
-      }
-      window.onload = function() {
-          openBlankPage();
-      }
-    </script>
+</script>
