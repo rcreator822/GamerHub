@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>New Tab</title>
+    <meta name="description" content="SKIBIDI">
+    <link rel="icon" href="Newtab.png">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Nunito:wght@200;1000&family=Poppins:wght@100;900&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-color: black;
+        color: lawngreen;
+        font-family: 'Courier Prime', monospace;
+      }
+      html, body {
+        height: 100%;
+      }
+      * {
+        margin: 0px;
+        box-sizing: border-box;
+      }
+      h1 {
+        font-size: 100px;
+        text-align: center;
+      }
+      .sb {
+        position: fixed;
+        top: 0px;
+        height: 50px;
+        width: 100%;
+        background-color: gray;
+        color: lawngreen;
+      }
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+      }
+      a {
+        font-family: 'Nunito', sans-serif;
+        text-decoration: none;
+        color: blue;
+      }
+      iframe {
+        position: absolute;
+        top: 50px; /* Starts below the nav bar */
+        width: 100%;
+        left: 0px;
+        height: calc(100% - 50px); /* Adjusts height dynamically */
+        display: block;
+        border: none;
+      }
+      input {
+        border: 2px solid white;
+        border-radius: 20px;
+        color: white;
+        background-color: black;
+        padding: 5px 10px;
+      }
+    </style>
+    <script>
+      const searchBar = document.getElementById("search");
+      .addEventListener('keydown', (event) => {
+        if (event.key === "Enter") {
+          var url = searchBar.value;
+          document.getElementById("iframe").scr = url;
+        }
+      });
+
+    </script>
+  </head>
+  <body>
+    <div class="sb">
+      <nav>
+        <a href="Gamer_Hub.html">Home</a>
+        <input id="search" type="url" placeholder="Enter URL...">
+      </nav>
+    </div>
+    <iframe src="https://www.google.com" title="Browser" id="iframe"></iframe>
+  </body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Open Center</title>
+    <meta name="description" content="SKIBIDI">
+    <link rel="icon" href="Tab Icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-color: black;
+        color: lawngreen;
+        font-family: Courier Prime;
+      }
+      .button {
+        background: gray;
+        color: lawngreen;
+        border: white 2px solid;
+        border-radius: 6px;
+        font-size: 15px;
+        font-family: Courier Prime;
+        text-align: center;
+      }
+      .button:hover {
+        font-size: 19px;
+        transform: translateY(-3px);
+        text-align: center;
+        text-decoration: underline;
+      }
+      h1 {
+        font-size: 100px;
+        text-align: center;
+      }
+      p, pre {
+        font-size: 20px;
+      }
+      .backup {
+        position: absolute;
+        right: 0px;
+      }
+      .others {
+        position: absolute;
+        font-size: 40px;
+        left: 10px;
+      }
+      p, pre, a, h1, h2, h3, h4, h5, h6 {
+        text-align: center;
+      }
+      .other {
+        background: gray;
+        color: black;
+        border: gray 2px solid;
+        border-radius: 6px;
+        font-size: 25px;
+        font-family: Courier Prime;
+        text-align: center;
+      }
+      .other:hover {
+        transform: translateY(-3px);
+        text-align: center;
+      }
+      .other2 {
+        background: gray;
+        color: black;
+        border: gray 2px solid;
+        border-radius: 6px;
+        font-size: 25px;
+        font-family: Courier Prime;
+        text-align: center;
+      }
+      .other2:hover {
+        transform: translateY(-3px);
+        text-align: center;
+      }
+      .terminal {
+        background: gray;
+        color: lawngreen;
+        border: white 2px solid;
+        border-radius: 6px;
+        font-size: 25px;
+        font-family: Courier Prime;
+        text-align: center;
+      }
+      .terminal:hover {
+        transform: translateY(-3px);
+        text-align: center;
+      }
+      .sky {
+        background: white;
+        color: orange;
+        border: red 2px solid;
+        border-radius: 6px;
+        font-size: 25px;
+        font-family: Nunito;
+        text-align: center;
+      }
+      .sky:hover {
+        transform: translateY(-3px);
+        text-align: center;
+      }
+      .time {
+        position: absolute;
+        right: 0px;
+      }
+    </style>
+    <script>
+      function startTime() {
+        const today = new Date();
+        let h = today.getHours();
+        let m = today.getMinutes();
+        let s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById('txt').innerHTML =  h + ":" + m + ":" + s;
+        setTimeout(startTime, 1000);
+      }
+      function checkTime(i) {
+        if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+        return i;
+      }
+      var correct = "skibidiGHmasterman";
+      
+      function openGH() {
+        var GHpass = document.getElementById("ghgames").value;
+        if (GHpass === correct) {
+          window.alert("In the website you are about to be taken to I recommend bookmarking or saving the link to it.");
+          window.location.href='Gamer_Hub.html';
+        } else {
+          window.alert("Sorry, the password is not '" + GHpass + "'!");
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Open Center</h1>
+    <pre>Please type the password to this website!<pre>Gamer Hub<br><input type="password" id="ghgames"><br><button class="button" onclick="openGH()">Submit</button><pre></pre>
+  </body>
+</html>
