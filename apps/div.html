@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Div-Style Generator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    .controls label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    .controls input {
+      width: 100%;
+    }
+    .preview {
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #box {
+      background: #f0f0f0;
+      width: 200px;
+      height: 200px;
+    }
+    .output {
+      background: #eee;
+      padding: 10px;
+      font-family: monospace;
+      margin-bottom: 10px;
+      white-space: pre-line;
+    }
+    button {
+      padding: 8px 12px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Box-Shadow Generator</h2>
+
+  <div class="controls">
+    <h3>Box Shadow Controls</h3>
+    <label>Horizontal Offset: <input type="range" id="hOffset" min="-50" max="50" value="10"></label>
+    <label>Vertical Offset: <input type="range" id="vOffset" min="-50" max="50" value="10"></label>
+    <label>Blur Radius: <input type="range" id="blur" min="0" max="100" value="10"></label>
+    <label>Spread: <input type="range" id="spread" min="-50" max="50" value="0"></label>
+    <label>Shadow Color: <input type="color" id="color" value="#333333"></label>
+
+    <h3>Box Customization</h3>
+    <label>Background Color: <input type="color" id="bgColor" value="#f0f0f0"></label>
+    <label>Border Radius: <input type="range" id="radius" min="0" max="100" value="0"></label>
+    <label>Width (px): <input type="number" id="boxWidth" value="200"></label>
+    <label>Height (px): <input type="number" id="boxHeight" value="200"></label>
+  </div>
+
+  <div class="preview">
+    <div id="box"></div>
+  </div>
+
+  <div class="output" id="cssOutput"></div>
+  <button onclick="copyCSS()">Copy CSS</button>
+  <button onclick="downloadCSS()">Download CSS</button>
+
+  <script>
+    const hOffset = document.getElementById("hOffset");
+    const vOffset = document.getElementById("vOffset");
+    const blur = document.getElementById("blur");
+    const spread = document.getElementById("spread");
+    const color = document.getElementById("color");
+    const bgColor = document.getElementById("bgColor");
+    const radius = document.getElementById("radius");
+    const boxWidth = document.getElementById("boxWidth");
+    const boxHeight = document.getElementById("boxHeight");
+
+    const box = document.getElementById("box");
+    const cssOutput = document.getElementById("cssOutput");
+
+    function getCSS() {
+      return `
+box-shadow: ${hOffset.value}px ${vOffset.value}px ${blur.value}px ${spread.value}px ${color.value};
+background-color: ${bgColor.value};
+border-radius: ${radius.value}px;
+width: ${boxWidth.value}px;
+height: ${boxHeight.value}px;
+      `.trim();
+    }
+
+    function updateBox() {
+      box.style.backgroundColor = bgColor.value;
+      box.style.borderRadius = `${radius.value}px`;
+      box.style.width = `${boxWidth.value}px`;
+      box.style.height = `${boxHeight.value}px`;
+    }
+
+    function updateShadow() {
+      const shadow = `${hOffset.value}px ${vOffset.value}px ${blur.value}px ${spread.value}px ${color.value}`;
+      box.style.boxShadow = shadow;
+      cssOutput.textContent = getCSS();
+    }
+
+    function copyCSS() {
+      navigator.clipboard.writeText(getCSS()).then(() => {
+        alert("Full box CSS copied to clipboard!");
+      }).catch(err => {
+        alert("Failed to copy CSS");
+        console.error(err);
+      });
+    }
+
+    function downloadCSS() {
+      const blob = new Blob([getCSS()], { type: 'text/css' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'box-style.css';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    [
+      hOffset, vOffset, blur, spread, color,
+      bgColor, radius, boxWidth, boxHeight
+    ].forEach(input =>
+      input.addEventListener("input", () => {
+        updateBox();
+        updateShadow();
+      })
+    );
+
+    updateBox();
+    updateShadow();
+  </script>
+</body>
+</html>
