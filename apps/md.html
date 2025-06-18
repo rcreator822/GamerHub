@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Markdown Previewer</title>
+  <link rel="icon" href="TabIcon.png">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background-color: #0d1117;
+      color: #c9d1d9;
+    }
+    textarea {
+      width: 50%;
+      padding: 1rem;
+      background-color: #161b22;
+      color: #c9d1d9;
+      border: none;
+      resize: none;
+      outline: none;
+      font-size: 1rem;
+    }
+    #preview {
+      width: 50%;
+      padding: 2rem;
+      overflow-y: auto;
+      background-color: #0d1117;
+    }
+    .markdown-body {
+      background-color: #0d1117;
+      color: #c9d1d9;
+    }
+    #download-wrapper {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background-color: #161b22;
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    #download-btn {
+      background-color: #238636;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #download-btn:hover {
+      background-color: #2ea043;
+    }
+
+
+  </style>
+</head>
+<body>
+  <textarea id="markdown" placeholder="# Type your markdown here..."># Hello Markdown!</textarea>
+  <div id="preview" class="markdown-body"></div>
+  <div id="download-wrapper">
+    <button id="download-btn">Download HTML</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    const textarea = document.getElementById('markdown');
+    const preview = document.getElementById('preview');
+
+    function updatePreview() {
+      const markdownText = textarea.value;
+      preview.innerHTML = marked.parse(markdownText);
+    }
+
+    textarea.addEventListener('input', updatePreview);
+    updatePreview(); // Initial call
+    document.getElementById("download-btn").addEventListener("click", function () {
+      const blob = new Blob([preview.innerHTML], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.download = "preview.html";
+      link.href = url;
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
