@@ -4,6 +4,7 @@ Welcome to GamerHub!
 [![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=rcreator822&repo=GamerHub&theme=dark)](https://github.com/rcreator822/GamerHub)
 
 [Official Release](https://ghgames.netlify.app)
+[Official Release Auto-Proxied](https://ghgames.netlify.app/redirect.html)
 
 Currently: [![Netlify Status](https://api.netlify.com/api/v1/badges/e185b786-9878-4207-81a6-11086ba79f8c/deploy-status)](https://app.netlify.com/projects/ghgames/deploys)
 
