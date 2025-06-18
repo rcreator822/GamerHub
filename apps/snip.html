@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Code Snippet Organizer</title>
+  <link rel="icon" href="TabIcon.png">
+  <style>
+    :root {
+      --bg-color: #1e1e2f;
+      --text-color: #f1f1f1;
+      --input-bg: #2e2e3e;
+      --snippet-bg: #2a2a3a;
+      --highlight: #4e4ef1;
+    }
+
+    body.light {
+      --bg-color: #ffffff;
+      --text-color: #1e1e2f;
+      --input-bg: #e5e5f5;
+      --snippet-bg: #f2f2f8;
+      --highlight: #4e4ef1;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: all 0.3s ease;
+    }
+
+    input, select, textarea, button {
+      display: block;
+      margin: 10px 0;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      background-color: var(--input-bg);
+      color: var(--text-color);
+    }
+
+    textarea {
+      height: 100px;
+      resize: vertical;
+    }
+
+    button {
+      background-color: var(--highlight);
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #6c6cff;
+    }
+
+    .snippet {
+      background-color: var(--snippet-bg);
+      border-radius: 10px;
+      padding: 12px;
+      margin: 10px 0;
+      border-left: 4px solid var(--highlight);
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      margin-top: 8px;
+    }
+
+    .theme-toggle {
+      float: right;
+      margin-top: 0px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--highlight);
+      background: none;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
+  <h1>🧠 Code Snippet Organizer</h1>
+  <input id="title" placeholder="Snippet Title" />
+  <select id="language">
+    <option value="JavaScript">JavaScript</option>
+    <option value="Python">Python</option>
+    <option value="HTML">HTML</option>
+    <option value="CSS">CSS</option>
+  </select>
+  <textarea id="code" placeholder="Paste your code here..."></textarea>
+  <button onclick="saveSnippet()">Save Snippet</button>
+  <button onclick="resetSnippets()">Reset Snippets</button>
+  
+  <div id="snippets"></div>
+
+  <script>
+    const snippetsEl = document.getElementById("snippets");
+
+    function saveSnippet() {
+      const title = document.getElementById("title").value;
+      const language = document.getElementById("language").value;
+      const code = document.getElementById("code").value;
+
+      if (!title || !code) {
+        alert("Please fill in both the title and the code.");
+        return;
+      }
+
+      const snippet = { title, language, code };
+      let snippets = JSON.parse(localStorage.getItem("snippets")) || [];
+      snippets.push(snippet);
+      localStorage.setItem("snippets", JSON.stringify(snippets));
+      displaySnippets();
+    }
+
+    function resetSnippets() {
+      if (confirm("Are you sure you want to delete all snippets?")) {
+        localStorage.removeItem("snippets");
+        displaySnippets();
+      }
+    }
+
+    function displaySnippets() {
+      const snippets = JSON.parse(localStorage.getItem("snippets")) || [];
+      snippetsEl.innerHTML = "";
+      snippets.forEach((s) => {
+        snippetsEl.innerHTML += `
+          <div class="snippet">
+            <strong>${s.title} (${s.language})</strong>
+            <pre><code>${s.code}</code></pre>
+          </div>`;
+      });
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("light");
+    }
+
+    displaySnippets();
+  </script>
+</body>
+</html>
