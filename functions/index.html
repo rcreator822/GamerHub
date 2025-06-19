@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy tool</title>
+    <style>
+        body {
+            background-color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        #urlInput {
+            width: 300px;
+            padding: 10px;
+            border: 2px solid purple;
+            background-color: black;
+            color: purple;
+            font-size: 16px;
+            outline: none;
+        }
+
+        #goButton {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: black;
+            color: purple;
+            border: 2px solid purple;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #goButton:hover {
+            background-color: purple;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <input type="text" id="urlInput" placeholder="Enter URL">
+    <button id="goButton">Go</button>
+
+    <script>
+        function formatURL(string) {
+            if (!string.startsWith("http://") && !string.startsWith("https://")) {
+                return "https://" + string;
+            }
+            return string;
+        }
+
+        document.getElementById("goButton").addEventListener("click", () => {
+            let input = document.getElementById("urlInput").value.trim();
+            let formattedURL = formatURL(input);
+
+            try {
+                new URL(formattedURL);
+                window.location.href = `https://phantom-games.netlify.app/.netlify/functions/proxy?url=${formattedURL}`;
+            } catch (error) {
+                alert("Please enter a valid URL.");
+            }
+        });
+    </script>
+
+</body>
+</html>
