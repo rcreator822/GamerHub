@@ -143,7 +143,7 @@
       let label = prompt('Label for text input:', 'Your name');
       if (!label || !label.trim()) return;
       label = label.trim();
-      const html = `<label>${label}: <input type="text" disabled></label>`;
+      const html = `<label>${label}: <input type="text"></label>`;
       preview.appendChild(createWrapper(html));
       updateHTML();
     }
@@ -152,7 +152,7 @@
       let label = prompt('Label for checkbox:', 'I agree');
       if (!label || !label.trim()) return;
       label = label.trim();
-      const html = `<label><input type="checkbox" disabled> ${label}</label>`;
+      const html = `<label><input type="checkbox"> ${label}</label>`;
       preview.appendChild(createWrapper(html));
       updateHTML();
     }
