@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamer Hub Universe</title>
+    <link rel="icon" href="TabIcon.png">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Importing Google Font -->
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+
+      /* Global styles */
+      body {
+        margin: 0;
+        font-family: Courier Prime;
+        background-color: black;
+        color: lawngreen;
+      }
+
+      header, footer {
+        text-align: center;
+        padding: 10px;
+        background-color: black;
+      }
+
+      header {
+        padding: 20px;
+        border-bottom: 5px solid lawngreen;
+      }
+
+      footer {
+        box-shadow: 10px -5px 5px lawngreen;
+      }
+
+      #head {
+        text-align: center;
+        color: lawngreen;
+      }
+
+      #head:hover {
+        margin-left: calc(50% - 100px);
+        font-size: 35px;
+        border: 1px gray solid;
+        border-radius: 5px;
+        box-shadow: 10px 10px 5px lawngreen;
+        width: 200px;
+        text-align: center;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 10px;
+      }
+
+      .full {
+        color: black;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .full:hover {
+        background-color: black;
+        color: lawngreen;
+        font-size: 25px;
+        border-radius: 5px;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      /* Grid system */
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .col {
+        flex: 1;
+        min-width: 300px;
+        padding: 10px;
+        margin: 5px;
+        text-align: center;
+        border-radius: 5px;
+        background-color: #2f2f2f;
+      }
+
+      #blank {
+        background-color: #2f2f2f;
+        color: black;
+        transition: all 0.3s ease-in-out;
+        border: 1px gray none;
+        font-family: Courier Prime;
+        font-size: 24px;
+      }
+
+      #blank:hover {
+        background-color: black;
+        color: lawngreen;
+        font-size: 25px;
+        border-radius: 5px;
+      }
+      
+      /* Navigation */
+      nav {
+        display: flex;
+        justify-content: space-around;
+        padding: 10px;
+        background-color: #333;
+      }
+
+      nav a {
+        color: lawngreen;
+      }
+
+      @media (max-width: 600px) {
+        nav {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+    </style>
+
+    <script>
+      function startTime() {
+        const today = new Date();
+        let h = today.getHours();
+        let m = today.getMinutes();
+        let s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById("time").innerHTML = h + ":" + m + ":" + s;
+        setTimeout(startTime, 1000);
+      }
+
+      function checkTime(i) {
+        return i < 10 ? "0" + i : i;
+      }
+
+      window.onload = function () {
+        startTime();
+        updateBatteryStatus();
+      }
+
+      navigator.getBattery().then(battery => {
+        function updateBatteryStatus() {
+          document.getElementById("battery").textContent = `Battery Level: ${(battery.level * 100).toFixed(0)}%`;
+        }
+        updateBatteryStatus();
+        battery.addEventListener("levelchange", updateBatteryStatus);
+      });
+
+      let deferredPrompt;
+      window.addEventListener("beforeinstallprompt", (event) => {
+        // Prevent the default prompt from showing
+        event.preventDefault();
+        deferredPrompt = event;
+      });
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <a href="index.html"><h1 id="head">Gamer Hub</h1></a>
+    </header>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="apps.html">Apps</a>
+      <a href="games.html">Games</a>
+      <a href="chat/index.php">Chat</a>
+    </nav>
+
+    <main class="container">
+      <div class="row">
+        <a href="https://phantom-games.netlify.app">
+          <div class="col">
+            <a href="https://phantom-games.netlify.app"><h3 class="full">Phantom Games</h3></a>
+            <p>In progress by Phantomtax-AI.</p>
+          </div>
+        </a>
+        <a href="https://tech-team-one.vercel.app/">
+          <div class="col">
+            <a href="https://tech-team-one.vercel.app/"><h3 class="full">Apps</h3></a>
+            <p>In progress by Phantomtax-AI.</p>
+          </div>
+        </a>
+        <a href="javascript:(function%20()%20%7Bvar%20script=document.createElement('script');script.src='https://x-ray-goggles.mouse.org/webxray.js';script.className='webxray';script.setAttribute('data-lang','en-US');script.setAttribute('data-baseuri','https://x-ray-goggles.mouse.org');document.body.appendChild(script);%7D())">
+          <div class="col">
+            <a href="javascript:(function%20()%20%7Bvar%20script=document.createElement('script');script.src='https://x-ray-goggles.mouse.org/webxray.js';script.className='webxray';script.setAttribute('data-lang','en-US');script.setAttribute('data-baseuri','https://x-ray-goggles.mouse.org');document.body.appendChild(script);%7D())"><h3 class="full">Inspect</h3></a>
+            <p>Inspect by mouse.org.</p>
+          </div>
+        </a>
+      </div>
+    </main>
+
+    <footer>
+      <p id="time"></p>
+      <p id="battery"></p>
+      <p>&copy; 2025 Gamer Hub</p>
+    </footer>
+  </body>
+</html>
