@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Custom Form Builder – Embed-Ready</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #121212;
+      color: #f0f0f0;
+      padding: 2em;
+    }
+    .controls, .preview, .output {
+      background-color: #1e1e1e;
+      border-radius: 12px;
+      padding: 1em;
+      margin-bottom: 1.5em;
+    }
+    button {
+      margin: 0.3em;
+      padding: 0.5em 1em;
+      background-color: #2d89ef;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1b6fc2;
+    }
+    .form-element {
+      margin: 0.5em 0;
+      padding: 0.5em;
+      background-color: #2a2a2a;
+      border-radius: 6px;
+      cursor: grab;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .form-element.dragging {
+      opacity: 0.5;
+    }
+    .form-content {
+      flex-grow: 1;
+    }
+    .delete-btn {
+      background-color: crimson;
+      margin-left: 1em;
+      border-radius: 6px;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      background-color: #2a2a2a;
+      color: #f0f0f0;
+      border: none;
+      border-radius: 6px;
+      padding: 0.5em;
+      resize: vertical;
+    }
+  </style>
+</head>
+<body>
+  <h1>⚙️ Custom Form Builder (Dark Mode + Embed)</h1>
+
+  <div class="controls">
+    <button onclick="addTextInput()">Add Text Input</button>
+    <button onclick="addCheckbox()">Add Checkbox</button>
+    <button onclick="downloadHTML()">Download HTML</button>
+    <button onclick="generateIframe()">Generate Embed Code</button>
+  </div>
+
+  <div class="preview" id="form-preview">
+    <h3>Live Preview (drag to reorder)</h3>
+  </div>
+
+  <div class="output">
+    <h3>Generated HTML</h3>
+    <textarea id="generated-html" readonly></textarea>
+  </div>
+
+  <script>
+    const preview = document.getElementById('form-preview');
+    const htmlOutput = document.getElementById('generated-html');
+
+    function updateHTML() {
+      const html = Array.from(preview.children).map(el => el.querySelector('.form-content').innerHTML).join('\n');
+      htmlOutput.value = `<form>\n${html}\n</form>`;
+    }
+
+    function createWrapper(innerHTML) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'form-element';
+      wrapper.draggable = true;
+
+      const content = document.createElement('div');
+      content.className = 'form-content';
+      content.innerHTML = innerHTML;
+
+      const delBtn = document.createElement('button');
+      delBtn.textContent = '🗑️';
+      delBtn.className = 'delete-btn';
+      delBtn.onclick = e => {
+        e.stopPropagation();
+        preview.removeChild(wrapper);
+        updateHTML();
+      };
+
+      wrapper.appendChild(content);
+      wrapper.appendChild(delBtn);
+
+      // Drag events
+      wrapper.addEventListener('dragstart', () => wrapper.classList.add('dragging'));
+      wrapper.addEventListener('dragend', () => {
+        wrapper.classList.remove('dragging');
+        updateHTML();
+      });
+
+      return wrapper;
+    }
+
+    preview.addEventListener('dragover', e => {
+      e.preventDefault();
+      const dragging = document.querySelector('.dragging');
+      const after = [...preview.querySelectorAll('.form-element:not(.dragging)')]
+        .find(el => e.clientY < el.getBoundingClientRect().top + el.offsetHeight / 2);
+      if (after) preview.insertBefore(dragging, after);
+      else preview.appendChild(dragging);
+    });
+
+    function addTextInput() {
+      const label = prompt('Label for text input:', 'Your name');
+      if (!label) return;
+      const html = `<label>${label}: <input type="text"></label>`;
+      preview.appendChild(createWrapper(html));
+      updateHTML();
+    }
+
+    function addCheckbox() {
+      const label = prompt('Label for checkbox:', 'I agree');
+      if (!label) return;
+      const html = `<label><input type="checkbox"> ${label}</label>`;
+      preview.appendChild(createWrapper(html));
+      updateHTML();
+    }
+
+    function downloadHTML() {
+      const blob = new Blob([htmlOutput.value], { type: 'text/html' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'custom-form.html';
+      link.click();
+    }
+
+    function generateIframe() {
+      const blob = new Blob([htmlOutput.value], { type: 'text/html' });
+      const blobUrl = URL.createObjectURL(blob);
+      const iframeCode = `<iframe src="${blobUrl}" width="100%" height="300" style="border:none;"></iframe>`;
+      prompt("Copy this embed code to use in your HTML page:", iframeCode);
+    }
+  </script>
+</body>
+</html>
