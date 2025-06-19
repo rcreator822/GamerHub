@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Custom Form Builder – Embed-Ready</title>
   <style>
     body {
@@ -44,10 +44,17 @@
     .form-content {
       flex-grow: 1;
     }
+    .form-content input,
+    .form-content textarea {
+      pointer-events: none;
+    }
     .delete-btn {
       background-color: crimson;
       margin-left: 1em;
       border-radius: 6px;
+    }
+    .delete-btn[aria-label]::after {
+      content: '';
     }
     textarea {
       width: 100%;
@@ -85,7 +92,9 @@
     const htmlOutput = document.getElementById('generated-html');
 
     function updateHTML() {
-      const html = Array.from(preview.children).map(el => el.querySelector('.form-content').innerHTML).join('\n');
+      const html = Array.from(preview.querySelectorAll('.form-element'))
+        .map(el => el.querySelector('.form-content')?.innerHTML)
+        .join('\n');
       htmlOutput.value = `<form>\n${html}\n</form>`;
     }
 
@@ -101,6 +110,7 @@
       const delBtn = document.createElement('button');
       delBtn.textContent = '🗑️';
       delBtn.className = 'delete-btn';
+      delBtn.setAttribute('aria-label', 'Delete form element');
       delBtn.onclick = e => {
         e.stopPropagation();
         preview.removeChild(wrapper);
@@ -130,17 +140,19 @@
     });
 
     function addTextInput() {
-      const label = prompt('Label for text input:', 'Your name');
-      if (!label) return;
-      const html = `<label>${label}: <input type="text"></label>`;
+      let label = prompt('Label for text input:', 'Your name');
+      if (!label || !label.trim()) return;
+      label = label.trim();
+      const html = `<label>${label}: <input type="text" disabled></label>`;
       preview.appendChild(createWrapper(html));
       updateHTML();
     }
 
     function addCheckbox() {
-      const label = prompt('Label for checkbox:', 'I agree');
-      if (!label) return;
-      const html = `<label><input type="checkbox"> ${label}</label>`;
+      let label = prompt('Label for checkbox:', 'I agree');
+      if (!label || !label.trim()) return;
+      label = label.trim();
+      const html = `<label><input type="checkbox" disabled> ${label}</label>`;
       preview.appendChild(createWrapper(html));
       updateHTML();
     }
