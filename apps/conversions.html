@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dev Units Converter</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      background-color: #1e1e1e;
+      font-family: 'Segoe UI', sans-serif;
+      color: #eee;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    }
+    .converter {
+      background: #2a2a2a;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.4);
+      max-width: 600px;
+      width: 100%;
+    }
+    h2, h3 {
+      color: #76e2f7;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      background-color: #444;
+      color: #fff;
+    }
+    button {
+      margin-top: 0.5rem;
+      background-color: #3c88f7;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-right: 0.4rem;
+    }
+    button:hover {
+      background-color: #569df9;
+    }
+    .output {
+      margin-top: 0.25rem;
+      font-weight: bold;
+      display: inline-block;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background-color: #333;
+      padding: 0.5rem;
+      border-radius: 8px;
+      margin-bottom: 0.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .saved-text {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="converter">
+    <h2>Dev Units Converter</h2>
+
+    <!-- PX ⇄ % Converter -->
+    <label id="pxLabel">PX ➝ % (1920px base)</label>
+    <input type="number" id="pxInput" placeholder="Enter px or %" oninput="handlePxPercent()" />
+    <select id="pxSelect" onchange="handlePxPercent()">
+      <option value="pxToPercent">px ➝ %</option>
+      <option value="percentToPx">% ➝ px</option>
+    </select>
+    <div>
+      <span class="output" id="pxPercentResult"></span>
+      <button onclick="copyResult('pxPercentResult')">📋 Copy</button>
+      <button onclick="saveConversion('PX/%', document.getElementById('pxPercentResult').textContent)">⭐ Save</button>
+    </div>
+
+    <!-- HEX ⇄ RGBA Converter -->
+    <label id="hexLabel">HEX ➝ RGBA</label>
+    <input type="text" id="hexInput" placeholder="#rrggbb or rgba()" oninput="handleHexRgba()" />
+    <select id="hexSelect" onchange="handleHexRgba()">
+      <option value="hexToRgba">HEX ➝ RGBA</option>
+      <option value="rgbaToHex">RGBA ➝ HEX</option>
+    </select>
+    <div>
+      <span class="output" id="hexResult"></span>
+      <button onclick="copyResult('hexResult')">📋 Copy</button>
+      <button onclick="saveConversion('HEX/RGBA', document.getElementById('hexResult').textContent)">⭐ Save</button>
+    </div>
+
+    <!-- PX ⇄ VH Converter -->
+    <label id="vhLabel">PX ➝ VH (1080px base)</label>
+    <input type="number" id="vhInput" placeholder="Enter px or vh" oninput="handleVh()" />
+    <select id="vhSelect" onchange="handleVh()">
+      <option value="pxToVh">px ➝ vh</option>
+      <option value="vhToPx">vh ➝ px</option>
+    </select>
+    <div>
+      <span class="output" id="vhResult"></span>
+      <button onclick="copyResult('vhResult')">📋 Copy</button>
+      <button onclick="saveConversion('PX/VH', document.getElementById('vhResult').textContent)">⭐ Save</button>
+    </div>
+
+    <h3>⭐ Saved Conversions</h3>
+    <ul id="savedList"></ul>
+  </div>
+
+  <script>
+    function handlePxPercent() {
+      const value = parseFloat(document.getElementById('pxInput').value);
+      const direction = document.getElementById('pxSelect').value;
+      const label = document.getElementById('pxLabel');
+      let result = '';
+      if (!isNaN(value)) {
+        if (direction === 'pxToPercent') {
+          result = ((value / 1920) * 100).toFixed(2) + '%';
+          label.textContent = 'PX ➝ % (1920px base)';
+        } else {
+          result = ((value / 100) * 1920).toFixed(2) + 'px';
+          label.textContent = '% ➝ PX (1920px base)';
+        }
+      }
+      document.getElementById('pxPercentResult').textContent = result;
+    }
+
+    function handleHexRgba() {
+      const input = document.getElementById('hexInput').value.trim();
+      const mode = document.getElementById('hexSelect').value;
+      const label = document.getElementById('hexLabel');
+      let result = '';
+
+      if (mode === 'hexToRgba') {
+        label.textContent = 'HEX ➝ RGBA';
+        const hex = input.replace('#', '');
+        if (hex.length === 6) {
+          const r = parseInt(hex.substring(0, 2), 16);
+          const g = parseInt(hex.substring(2, 4), 16);
+          const b = parseInt(hex.substring(4, 6), 16);
+          result = `rgba(${r}, ${g}, ${b}, 1)`;
+        } else {
+          result = 'Invalid HEX';
+        }
+      } else {
+        label.textContent = 'RGBA ➝ HEX';
+        const match = input.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+        if (match) {
+          const [_, r, g, b] = match;
+          const hex = `#${[r, g, b].map(x => (+x).toString(16).padStart(2, '0')).join('')}`;
+          result = hex.toUpperCase();
+        } else {
+          result = 'Invalid RGBA';
+        }
+      }
+
+      document.getElementById('hexResult').textContent = result;
+    }
+
+    function handleVh() {
+      const value = parseFloat(document.getElementById('vhInput').value);
+      const direction = document.getElementById('vhSelect').value;
+      const label = document.getElementById('vhLabel');
+      let result = '';
+      if (!isNaN(value)) {
+        if (direction === 'pxToVh') {
+          result = ((value / 1080) * 100).toFixed(2) + 'vh';
+          label.textContent = 'PX ➝ VH (1080px base)';
+        } else {
+          result = ((value / 100) * 1080).toFixed(2) + 'px';
+          label.textContent = 'VH ➝ PX (1080px base)';
+        }
+      }
+      document.getElementById('vhResult').textContent = result;
+    }
+
+    function copyResult(id) {
+      const el = document.getElementById(id);
+      if (el.textContent !== '') {
+        navigator.clipboard.writeText(el.textContent).then(() => {
+          const original = el.textContent;
+          el.textContent += ' ✅';
+          setTimeout(() => el.textContent = original, 1000);
+        });
+      }
+    }
+
+    function saveConversion(type, result) {
+      if (!result || result.toLowerCase().includes('invalid')) return;
+      const saved = JSON.parse(localStorage.getItem('savedConversions') || '[]');
+      saved.unshift({ type, result });
+      localStorage.setItem('savedConversions', JSON.stringify(saved.slice(0, 10)));
+      renderSavedConversions();
+    }
+
+    function deleteConversion(index) {
+      const saved = JSON.parse(localStorage.getItem('savedConversions') || '[]');
+      saved.splice(index, 1);
+      localStorage.setItem('savedConversions', JSON.stringify(saved));
+      renderSavedConversions();
+    }
+
+    function renderSavedConversions() {
+      const saved = JSON.parse(localStorage.getItem('savedConversions') || '[]');
+      const list = document.getElementById('savedList');
+      list.innerHTML = '';
+      saved.forEach((conv, index) => {
+        const li = document.createElement('li');
+        const span = document.createElement('span');
+        span.className = 'saved-text';
+        span.textContent = `${conv.type}: ${conv.result}`;
+        const delBtn = document.createElement('button');
+        delBtn.textContent = '🗑️';
+        delBtn.onclick = () => deleteConversion(index);
+        li.appendChild(span);
+        li.appendChild(delBtn);
+        list.appendChild(li);
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', renderSavedConversions);
+  </script>
+</body>
+</html>
