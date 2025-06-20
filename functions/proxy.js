@@ -19,14 +19,26 @@ exports.handler = async (event) => {
         let contentType = response.headers.get("content-type") || "";
         let body = await response.text();
 
-        // Rewrite links to stay within the proxy
         if (contentType.includes("text/html")) {
+            // Make all relative and absolute links go through the proxy
+            const base = new URL(targetUrl);
+
             body = body.replace(/href="(.*?)"/g, (match, href) => {
-                const absolute = new URL(href, targetUrl).href;
+                const absolute = new URL(href, base).href;
                 return `href="/.netlify/functions/proxy?url=${encodeURIComponent(absolute)}"`;
             });
 
-            // You can also inject JS to intercept client-side redirects here if needed
+            body = body.replace(/src="(.*?)"/g, (match, src) => {
+                const absolute = new URL(src, base).href;
+                return `src="${absolute}"`;
+            });
+
+            // Optional: inject a <base> tag to help with relative resource loading
+            if (!body.includes("<base")) {
+                body = body.replace(/<head[^>]*>/i, match => {
+                    return `${match}\n<base href="${base.href}">`;
+                });
+            }
         }
 
         return {
