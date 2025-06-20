@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proxy tool</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Proxy Tool</title>
     <style>
         body {
+            margin: 0;
             background-color: black;
+            font-family: Arial, sans-serif;
+            color: white;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
-            color: white;
-            font-family: Arial, sans-serif;
+        }
+
+        #topBar {
+            display: flex;
+            padding: 10px;
+            background-color: #111;
+            border-bottom: 2px solid purple;
+            align-items: center;
         }
 
         #urlInput {
-            width: 300px;
+            flex: 1;
             padding: 10px;
             border: 2px solid purple;
             background-color: black;
@@ -27,7 +34,7 @@
         }
 
         #goButton {
-            margin-top: 10px;
+            margin-left: 10px;
             padding: 10px 20px;
             background-color: black;
             color: purple;
@@ -40,33 +47,46 @@
             background-color: purple;
             color: black;
         }
+
+        #iframeContainer {
+            flex: 1;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body>
-
-    <input type="text" id="urlInput" placeholder="Enter URL">
-    <button id="goButton">Go</button>
+    <div id="topBar">
+        <input type="text" id="urlInput" placeholder="Enter URL" />
+        <button id="goButton">Go</button>
+    </div>
+    <div id="iframeContainer">
+        <iframe id="proxiedFrame"></iframe>
+    </div>
 
     <script>
-        function formatURL(string) {
-            if (!string.startsWith("http://") && !string.startsWith("https://")) {
-                return "https://" + string;
+        function formatURL(url) {
+            if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                return "https://" + url;
             }
-            return string;
+            return url;
         }
 
         document.getElementById("goButton").addEventListener("click", () => {
-            let input = document.getElementById("urlInput").value.trim();
-            let formattedURL = formatURL(input);
-
+            const input = document.getElementById("urlInput").value.trim();
+            const formattedURL = formatURL(input);
             try {
                 new URL(formattedURL);
-                window.location.href = `https://ghgames.netlify.app/.netlify/functions/proxy?url=${formattedURL}`;
-            } catch (error) {
+                const frame = document.getElementById("proxiedFrame");
+                frame.src = `/.netlify/functions/proxy?url=${encodeURIComponent(formattedURL)}`;
+            } catch (err) {
                 alert("Please enter a valid URL.");
             }
         });
     </script>
-
 </body>
 </html>
