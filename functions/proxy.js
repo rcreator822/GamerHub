@@ -1,10 +1,9 @@
 exports.handler = async (event) => {
     const targetUrl = event.queryStringParameters.url;
-
     if (!targetUrl) {
         return {
             statusCode: 400,
-            body: JSON.stringify({ error: "Missing URL parameter" }),
+            body: "Missing URL parameter"
         };
     }
 
@@ -17,27 +16,17 @@ exports.handler = async (event) => {
             }
         });
 
-        // Handle server-side redirects (3xx)
-        if (response.status >= 300 && response.status < 400) {
-            const location = response.headers.get("location");
-            const absolute = new URL(location, targetUrl).href;
-            return {
-                statusCode: 302,
-                headers: {
-                    Location: `/.netlify/functions/proxy?url=${encodeURIComponent(absolute)}`
-                }
-            };
-        }
-
-        const contentType = response.headers.get("content-type") || "";
-
-        // If the content is HTML, rewrite the links to stay within the proxy
+        let contentType = response.headers.get("content-type") || "";
         let body = await response.text();
+
+        // Rewrite links to stay within the proxy
         if (contentType.includes("text/html")) {
             body = body.replace(/href="(.*?)"/g, (match, href) => {
                 const absolute = new URL(href, targetUrl).href;
                 return `href="/.netlify/functions/proxy?url=${encodeURIComponent(absolute)}"`;
             });
+
+            // You can also inject JS to intercept client-side redirects here if needed
         }
 
         return {
@@ -46,13 +35,12 @@ exports.handler = async (event) => {
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type": contentType
             },
-            body,
+            body
         };
-    } catch (error) {
+    } catch (err) {
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: "Failed to fetch data", details: error.message }),
+            body: `Fetch error: ${err.message}`
         };
     }
 };
-console.log("hi");
