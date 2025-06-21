@@ -23,33 +23,51 @@ exports.handler = async (event) => {
         if (contentType.includes("text/html")) {
             const base = new URL(targetUrl);
 
-            // Rewrite <a href="..."> to stay in the proxy
+            // Rewrite anchor links
             body = body.replace(/href="(.*?)"/g, (match, href) => {
-                const absolute = new URL(href, base).href;
-                return `href="/.netlify/functions/proxy?url=${encodeURIComponent(absolute)}"`;
+                try {
+                    const absolute = new URL(href, base).href;
+                    return `href="/.netlify/functions/proxy?url=${encodeURIComponent(absolute)}"`;
+                } catch {
+                    return match;
+                }
             });
 
-            // Rewrite <script src="...">, <img src="..."> etc.
+            // Rewrite scripts, images, etc.
             body = body.replace(/src="(.*?)"/g, (match, src) => {
-                const absolute = new URL(src, base).href;
-                return `src="${absolute}"`;
+                try {
+                    const absolute = new URL(src, base).href;
+                    return `src="${absolute}"`;
+                } catch {
+                    return match;
+                }
             });
 
-            // Add <base> tag and interception script
+            // Inject <base> tag and script to intercept client-side navigations
             body = body.replace(/<head[^>]*>/i, match => {
                 return `${match}
 <base href="${base.href}">
 <script>
     const proxy = url => '/.netlify/functions/proxy?url=' + encodeURIComponent(url);
-    const _open = window.open;
-    window.open = (...args) => _open(proxy(args[0]), ...args.slice(1));
-    ['replace','assign'].forEach(fn => {
-        const orig = window.location[fn];
-        window.location[fn] = function(url) { window.location.href = proxy(url); };
-    });
+
+    // Intercept location changes
     Object.defineProperty(window.location, 'href', {
-        set(val) { window.location.href = proxy(val); }
+        set(val) { window.location.assign(val); },
+        get() { return location.href; }
     });
+
+    ['assign', 'replace'].forEach(method => {
+        const original = window.location[method];
+        window.location[method] = function(url) {
+            original.call(window.location, proxy(url));
+        };
+    });
+
+    // Override window.open to preserve proxying
+    const originalOpen = window.open;
+    window.open = function(url, name, specs) {
+        return originalOpen(proxy(url), name, specs);
+    };
 </script>`;
             });
         }
