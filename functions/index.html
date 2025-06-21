@@ -120,6 +120,20 @@
                 alert("Enter a valid URL and click Go first!");
             }
         });
+        // Monitor iframe navigation and update the input field
+        document.getElementById("proxiedFrame").addEventListener("load", () => {
+            try {
+                const currentURL = document.getElementById("proxiedFrame").contentWindow.location.href;
+                const urlMatch = currentURL.match(/proxy\?url=([^&]+)/);
+                if (urlMatch && urlMatch[1]) {
+                    const decodedURL = decodeURIComponent(urlMatch[1]);
+                    latestFormattedURL = decodedURL;
+                    document.getElementById("urlInput").value = decodedURL;
+                }
+            } catch (err) {
+                // Accessing iframe content may throw if it navigated to a different origin — safely ignore
+            }
+        });
     </script>
 </body>
 </html>
