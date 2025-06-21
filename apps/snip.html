@@ -96,6 +96,7 @@
   <textarea id="code" placeholder="Paste your code here..."></textarea>
   <button onclick="saveSnippet()">Save Snippet</button>
   <button onclick="resetSnippets()">Reset Snippets</button>
+  <button onclick="exportSnippets()">Export All Snippets</button>
 
   <div id="snippets"></div>
 
@@ -149,6 +150,31 @@
 
     function toggleTheme() {
       document.body.classList.toggle("light");
+    }
+
+    function exportSnippets() {
+      const snippets = JSON.parse(localStorage.getItem("snippets")) || [];
+      if (snippets.length === 0) {
+        alert("No snippets to export.");
+        return;
+      }
+
+      snippets.forEach((s, index) => {
+        const extMap = {
+          JavaScript: "js",
+          Python: "py",
+          HTML: "html",
+          CSS: "css"
+        };
+        const extension = extMap[s.language] || "txt";
+        const blob = new Blob([s.code], { type: "text/plain" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `${s.title || "snippet_" + index}.${extension}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      });
     }
 
     displaySnippets();
