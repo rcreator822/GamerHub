@@ -67,6 +67,7 @@
     <div id="topBar">
         <input type="text" id="urlInput" placeholder="Enter URL" />
         <button id="goButton">Go</button>
+        <button id="openNewTab">↗️ Open in New Tab</button>
     </div>
     <div id="iframeContainer">
         <iframe id="proxiedFrame"></iframe>
@@ -79,16 +80,28 @@
             }
             return url;
         }
-
+    
+        let latestFormattedURL = "";
+    
         document.getElementById("goButton").addEventListener("click", () => {
             const input = document.getElementById("urlInput").value.trim();
             const formattedURL = formatURL(input);
+            latestFormattedURL = formattedURL;
             try {
                 new URL(formattedURL);
-                const frame = document.getElementById("proxiedFrame");
-                frame.src = `/.netlify/functions/proxy?url=${encodeURIComponent(formattedURL)}`;
-            } catch (err) {
+                document.getElementById("proxiedFrame").src =
+                    "/.netlify/functions/proxy?url=" + encodeURIComponent(formattedURL);
+            } catch {
                 alert("Please enter a valid URL.");
+            }
+        });
+    
+        document.getElementById("openNewTab").addEventListener("click", () => {
+            if (latestFormattedURL) {
+                const proxied = "/.netlify/functions/proxy?url=" + encodeURIComponent(latestFormattedURL);
+                window.open(proxied, "_blank");
+            } else {
+                alert("Enter a valid URL and click Go first!");
             }
         });
     </script>
