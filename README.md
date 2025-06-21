@@ -32,10 +32,12 @@ Got any feedback, suggestions, or notes for GamerHub? Feel free to submit them i
 This project is owned by [rcreator822](https://github.com/rcreator822), co-owned by [samuelbianchi73](https://github.com/samuelbianchi73) and [phantomtax-ai](https://github.com/phantomtax-ai), and inspired by [DotLYHiyou's](https://github.com/DotLYHiyou) project, [Blackout Games](https://github.com/DotLYHiyou/BlackoutGames).
 
 ## Licensing
-Distributed under the CC0-1.0 license. See LICENSE for more information.
+Distributed under the CC0-1.0 license. See `LICENSE` for more information.
 
 ## Acknowledgements
 
 Thank you to my school and friends for testing, other unblocked game website creators, and all other contributors.
+
+[phantomtax-ai](https://github.com/phantomtax-ai) gave the initial drafts for `netlify.toml`, `functions/index.html`, and `functions/proxy`.
 
 Major thanks to [DotLYHiyou](https://github.com/DotLYHiyou) for games and other support.
