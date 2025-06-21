@@ -96,11 +96,19 @@
   <textarea id="code" placeholder="Paste your code here..."></textarea>
   <button onclick="saveSnippet()">Save Snippet</button>
   <button onclick="resetSnippets()">Reset Snippets</button>
-  
+
   <div id="snippets"></div>
 
   <script>
     const snippetsEl = document.getElementById("snippets");
+
+    function escapeHTML(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
 
     function saveSnippet() {
       const title = document.getElementById("title").value;
@@ -130,10 +138,11 @@
       const snippets = JSON.parse(localStorage.getItem("snippets")) || [];
       snippetsEl.innerHTML = "";
       snippets.forEach((s) => {
+        const escapedCode = escapeHTML(s.code);
         snippetsEl.innerHTML += `
           <div class="snippet">
             <strong>${s.title} (${s.language})</strong>
-            <pre><code>${s.code}</code></pre>
+            <pre><code>${escapedCode}</code></pre>
           </div>`;
       });
     }
