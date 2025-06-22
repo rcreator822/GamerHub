@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Regex Tester</title>
+  <style>
+    body {
+      background-color: #1e1e2f;
+      color: #f1f1f1;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #9ed8ff;
+    }
+
+    input, textarea {
+      background-color: #2b2b3c;
+      color: #f1f1f1;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 0.8rem;
+      width: 100%;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      font-family: monospace;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #66ccff;
+    }
+
+    #output, #explanationPane, #groupTree {
+      background-color: #2b2b3c;
+      border-radius: 8px;
+      padding: 1rem;
+      white-space: pre-wrap;
+      border: 1px solid #444;
+      margin-top: 1rem;
+      font-family: monospace;
+    }
+
+    .group {
+      display: inline-block;
+      background: #333;
+      border: 1px solid #555;
+      padding: 4px 6px;
+      border-radius: 6px;
+      margin: 3px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .group:hover {
+      background: #444;
+    }
+
+    .group-content {
+      display: inline;
+      transition: max-height 0.3s ease, opacity 0.3s ease;
+      overflow: hidden;
+    }
+
+    .collapsed {
+      max-height: 0;
+      opacity: 0;
+      display: none;
+    }
+
+    .depth-0 { margin-left: 0; }
+    .depth-1 { margin-left: 10px; }
+    .depth-2 { margin-left: 20px; }
+    .depth-3 { margin-left: 30px; }
+  </style>
+</head>
+<body>
+  <h1>Regex Tester</h1>
+  <input id="regexInput" placeholder="Enter regex (e.g. \\b\\w+\\b)" />
+  <textarea id="testInput" rows="6" placeholder="Enter text to test..."></textarea>
+  <div id="output">Type in a regex and test text above!</div>
+  <div id="explanationPane"></div>
+  <div id="groupTree"></div>
+
+  <script>
+    const regexInput = document.getElementById('regexInput');
+    const testInput = document.getElementById('testInput');
+    const output = document.getElementById('output');
+
+    function updateOutput() {
+      let pattern = regexInput.value;
+      let text = testInput.value;
+      try {
+        let regex = new RegExp(pattern, 'g');
+        let result = [...text.matchAll(regex)];
+        if (result.length === 0) {
+          output.textContent = 'No matches.';
+        } else {
+          output.textContent = result.map(m => `Matched: "${m[0]}" at index ${m.index}`).join('\n');
+        }
+      } catch (err) {
+        output.textContent = '❌ Invalid regex: ' + err.message;
+      }
+
+      explainRegex(pattern);
+      parseGroups(pattern);
+    }
+
+    regexInput.addEventListener('input', updateOutput);
+    testInput.addEventListener('input', updateOutput);
+
+    function explainRegex(pattern) {
+      const pane = document.getElementById('explanationPane');
+      let output = '';
+
+      if (pattern.includes('(')) {
+        const groupMatches = [...pattern.matchAll(/\((\?:)?([^\)]*)\)/g)];
+        groupMatches.forEach((m, i) => {
+          const groupType = m[1] === '?:' ? 'Non-capturing group' : 'Capturing group';
+          output += `Group ${i + 1}: ${groupType} with expression "${m[2]}"\n`;
+        });
+      } else {
+        output += 'No groups found.\n';
+      }
+
+      const tokens = {
+        '\\d': 'Digit character',
+        '\\w': 'Word character',
+        '\\s': 'Whitespace character',
+        '.': 'Any character except newline',
+        '^': 'Start of line anchor',
+        '$': 'End of line anchor',
+        '*': 'Zero or more quantifier',
+        '+': 'One or more quantifier',
+        '?': 'Optional or zero-or-one quantifier',
+        '|': 'Alternation (OR)'
+      };
+
+      for (let token in tokens) {
+        if (pattern.includes(token)) {
+          output += `Token "${token}": ${tokens[token]}\n`;
+        }
+      }
+
+      pane.textContent = output || 'No notable tokens or groups found.';
+    }
+
+    function parseGroups(pattern) {
+      const treeContainer = document.getElementById('groupTree');
+      treeContainer.innerHTML = '';
+      let stack = [];
+      let html = '';
+      let groupId = 0;
+
+      for (let i = 0; i < pattern.length; i++) {
+        if (pattern[i] === '(') {
+          const depth = stack.length;
+          const id = 'group-' + groupId++;
+          html += `<span class="group depth-${depth}" onclick="toggleGroup('${id}')">( <span id="${id}" class="group-content">`;
+          stack.push(id);
+        } else if (pattern[i] === ')' && stack.length > 0) {
+          const id = stack.pop();
+          html += `</span> )</span>`;
+        } else {
+          html += pattern[i];
+        }
+      }
+
+      treeContainer.innerHTML = html;
+    }
+
+    function toggleGroup(id) {
+      const el = document.getElementById(id);
+      el.classList.toggle('collapsed');
+    }
+  </script>
+</body>
+</html>
