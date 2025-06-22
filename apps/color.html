@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Color Palette</title>
+  <link rel="stylesheet" href="TabIcon.png">
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f0f0;
+      text-align: center;
+      padding: 2rem;
+    }
+    button {
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      border: none;
+      background: #333;
+      color: white;
+      border-radius: 5px;
+      margin: 0.5rem;
+      cursor: pointer;
+    }
+    #palette, #savedColors {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.5rem;
+      margin: 2rem auto;
+      max-width: 1000px;
+    }
+    .color-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .color-box {
+      height: 100px;
+    }
+    .color-values {
+      padding: 0.5rem;
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .color-value {
+      cursor: pointer;
+      padding: 0.2rem;
+      border-radius: 4px;
+    }
+    .color-value:hover {
+      background: #eee;
+    }
+    .save-button {
+      background: #007bff;
+      color: white;
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+    }
+    h2 {
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎨 Persistent Color Palette</h1>
+  <button onclick="generatePalette()">🔁 Refresh Palette</button>
+  <button onclick="clearSavedColors()">🗑️ Clear Saved</button>
+
+  <div id="palette"></div>
+
+  <h2>❤️ Saved Colors</h2>
+  <div id="savedColors"></div>
+
+  <script>
+    function generatePalette() {
+      const palette = document.getElementById("palette");
+      palette.innerHTML = "";
+
+      for (let i = 0; i < 15; i++) {
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        const a = 1;
+
+        const hex = rgbToHex(r, g, b);
+        const hsl = rgbToHsl(r, g, b);
+        const rgba = `rgba(${r}, ${g}, ${b}, ${a})`;
+
+        const card = createColorCard(hex, hsl, rgba, true);
+        palette.appendChild(card);
+      }
+    }
+
+    function saveSingleColor(hex, hsl, rgba) {
+      const saved = JSON.parse(localStorage.getItem("savedColors") || "[]");
+      saved.unshift({ hex, hsl, rgba });
+      localStorage.setItem("savedColors", JSON.stringify(saved));
+      renderSavedColors();
+    }
+
+    function renderSavedColors() {
+      const savedColors = document.getElementById("savedColors");
+      savedColors.innerHTML = "";
+      const saved = JSON.parse(localStorage.getItem("savedColors") || "[]");
+
+      saved.forEach(color => {
+        const card = createColorCard(color.hex, color.hsl, color.rgba, false);
+        savedColors.appendChild(card);
+      });
+    }
+
+    function clearSavedColors() {
+      localStorage.removeItem("savedColors");
+      renderSavedColors();
+    }
+
+    function createColorCard(hex, hsl, rgba, canSave) {
+      const card = document.createElement("div");
+      card.className = "color-card";
+
+      const box = document.createElement("div");
+      box.className = "color-box";
+      box.style.backgroundColor = hex;
+
+      const values = document.createElement("div");
+      values.className = "color-values";
+
+      [hex, hsl, rgba].forEach(val => {
+        const p = document.createElement("div");
+        p.className = "color-value";
+        p.innerText = val;
+        p.onclick = () => {
+          navigator.clipboard.writeText(val);
+          alert(`Copied ${val} to clipboard`);
+        };
+        values.appendChild(p);
+      });
+
+      if (canSave) {
+        const saveBtn = document.createElement("button");
+        saveBtn.innerText = "💾 Save Color";
+        saveBtn.className = "save-button";
+        saveBtn.onclick = () => saveSingleColor(hex, hsl, rgba);
+        values.appendChild(saveBtn);
+      }
+
+      card.appendChild(box);
+      card.appendChild(values);
+      return card;
+    }
+
+    function rgbToHex(r, g, b) {
+      return "#" + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+    }
+
+    function rgbToHsl(r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      const max = Math.max(r, g, b), min = Math.min(r, g, b);
+      let h, s, l = (max + min) / 2;
+      if (max === min) { h = s = 0; }
+      else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+          case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+          case g: h = (b - r) / d + 2; break;
+          case b: h = (r - g) / d + 4; break;
+        }
+        h *= 60;
+      }
+      return `hsl(${h.toFixed(0)}, ${(s*100).toFixed(0)}%, ${(l*100).toFixed(0)}%)`;
+    }
+
+    generatePalette();
+    renderSavedColors();
+  </script>
+</body>
+</html>
