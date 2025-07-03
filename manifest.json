@@ -3,12 +3,19 @@
   "short_name": "App",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#000000",
+  "theme_color": "lawngreen",
+  "description": "A central hub for gamers to play, find websites, and code.",
+  "categories": ["Games", "Fun", "Proxy"]
   "icons": [
     {
       "src": "/TabIcon.png",
       "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/TabIcon-512.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ]
