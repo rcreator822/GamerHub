@@ -45,7 +45,6 @@
       border-radius: 12px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
-
     #download-btn {
       background-color: #238636;
       color: #fff;
@@ -56,17 +55,16 @@
       cursor: pointer;
       transition: background-color 0.3s;
     }
-
     #download-btn:hover {
       background-color: #2ea043;
     }
-
-
   </style>
 </head>
 <body>
   <textarea id="markdown" placeholder="# Type your markdown here..."># Hello Markdown!</textarea>
+
   <div id="preview" class="markdown-body"></div>
+
   <div id="download-wrapper">
     <button id="download-btn">Download HTML</button>
   </div>
@@ -83,8 +81,48 @@
 
     textarea.addEventListener('input', updatePreview);
     updatePreview(); // Initial call
+
     document.getElementById("download-btn").addEventListener("click", function () {
-      const blob = new Blob([preview.innerHTML], { type: "text/html" });
+      const markdownText = textarea.value;
+      const htmlContent = marked.parse(markdownText);
+
+      const fullHTML = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Markdown Preview</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background-color: #0d1117;
+      color: #c9d1d9;
+      padding: 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    .markdown-body {
+      background-color: #0d1117;
+      color: #c9d1d9;
+    }
+    a { color: #58a6ff; }
+    code { background-color: #161b22; padding: 0.2em 0.4em; border-radius: 6px; }
+    pre code { background-color: #161b22; display: block; padding: 1em; overflow-x: auto; }
+    hr {
+      border: none;
+      border-top: 1px solid #30363d;
+      margin: 2em 0;
+    }
+  </style>
+</head>
+<body>
+  <article class="markdown-body">
+    ${htmlContent}
+  </article>
+</body>
+</html>`;
+
+      const blob = new Blob([fullHTML], { type: "text/html" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.download = "preview.html";
