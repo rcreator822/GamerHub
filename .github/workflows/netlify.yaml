@@ -1,0 +1,17 @@
+name: Deploy to Netlify
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: 
+      name: production
+      url: https://ghgames.netlify.app
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Deploy to Netlify
+        run: |
+          # Add your deployment steps here
