@@ -2,6 +2,7 @@
   "name": "Gamer Hub",
   "short_name": "App",
   "start_url": "/index.html",
+  "version": "4.1",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "lawngreen",
