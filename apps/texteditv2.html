@@ -1,42 +1,106 @@
 <!DOCTYPE html>
-<html>
-        <head><title>Downloaded HTML</title><link rel="icon" href="TabIcon.png"></head>
-        <body>
-            <pre style="white-space: pre-wrap; word-wrap: break-word;">
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Multi-Document Text Editor</title>
+    <link rel="icon" href="TabIcon.png" />
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
-        textarea { width: 90%; height: 300px; max-width: 600px; min-height: 250px; }
-        button, select, input { margin: 10px; padding: 5px 10px; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #121212;
+            color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #1e1e1e;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #90caf9;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            width: 90%;
+            margin: 10px auto;
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 6px;
+            font-size: 16px;
+            background: #2a2a2a;
+            color: #e0e0e0;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 250px;
+        }
+
+        button {
+            background-color: #2979ff;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #1565c0;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
-    <h2>Multi-Document Text Editor</h2>
+    <div class="container">
+        <h2>📄 Multi-Document Text Editor</h2>
 
-    <input type="text" id="docName" placeholder="Enter document name"><br>
-    <textarea id="editor"></textarea><br>
+        <input type="text" id="docName" placeholder="Enter document name" /><br />
+        <textarea id="editor" placeholder="Start typing here..."></textarea><br />
 
-    <select id="format">
-        <option value="txt">TXT</option>
-        <option value="html">HTML</option>
-        <option value="pdf">PDF</option>
-        <option value="docx">DOCX</option>
-    </select>
-    <button onclick="downloadFile()">Download</button>
-    <button onclick="saveDocument()">Save</button>
+        <div class="actions">
+            <select id="format">
+                <option value="txt">TXT</option>
+                <option value="html">HTML</option>
+                <option value="pdf">PDF</option>
+                <option value="docx">DOCX</option>
+            </select>
+            <button onclick="downloadFile()">Download</button>
+            <button onclick="saveDocument()">Save</button>
+        </div>
 
-    <select id="loadSelect"></select>
-    <button onclick="loadDocument()">Load</button>
-    <button onclick="deleteDocument()">Delete</button>
+        <div class="actions">
+            <select id="loadSelect"></select>
+            <button onclick="loadDocument()">Load</button>
+            <button onclick="deleteDocument()">Delete</button>
+        </div>
+    </div>
 
+    <!-- External Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.1.2/docx.min.js"></script>
 
+    <!-- Script Logic -->
     <script>
         function saveDocument() {
             let name = document.getElementById("docName").value.trim();
@@ -106,7 +170,6 @@
                 let doc = new Document({
                     sections: [{ children: [new Paragraph(text)] }]
                 });
-
                 Packer.toBlob(doc).then(blob => {
                     link = document.createElement("a");
                     link.href = URL.createObjectURL(blob);
@@ -126,6 +189,3 @@
     </script>
 </body>
 </html>
-</pre>
-        </body>
-    </html>
